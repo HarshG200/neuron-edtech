@@ -540,6 +540,157 @@ async def verify_payment(payment_id: str, order_id: str, signature: str, current
         logger.error(f"Payment verification error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Payment verification failed: {str(e)}")
 
+# ============= Admin Routes =============
+
+ADMIN_EMAIL = "admin@edustream.com"
+ADMIN_PASSWORD_HASH = hash_password("admin123")  # Change this in production
+
+async def get_admin_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if payload.get('role') != 'admin':
+            raise HTTPException(status_code=403, detail="Admin access required")
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@api_router.post("/admin/login")
+async def admin_login(credentials: UserLogin):
+    """Admin login"""
+    if credentials.email != ADMIN_EMAIL:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    if not verify_password(credentials.password, ADMIN_PASSWORD_HASH):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    token_payload = {
+        'email': credentials.email,
+        'role': 'admin',
+        'exp': datetime.now(timezone.utc) + timedelta(days=7)
+    }
+    token = jwt.encode(token_payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    
+    return {'token': token, 'message': 'Admin login successful'}
+
+@api_router.get("/admin/stats")
+async def get_admin_stats(admin: dict = Depends(get_admin_user)):
+    """Get platform statistics"""
+    users_count = await db.users.count_documents({})
+    subjects_count = await db.subjects.count_documents({})
+    subscriptions_count = await db.subscriptions.count_documents({'payment_status': 'completed'})
+    
+    # Calculate total revenue
+    pipeline = [
+        {'$match': {'status': {'$in': ['verified', 'captured']}}},
+        {'$group': {'_id': None, 'total': {'$sum': '$amount'}}}
+    ]
+    revenue_result = await db.payments.aggregate(pipeline).to_list(1)
+    revenue = revenue_result[0]['total'] if revenue_result else 0
+    
+    return {
+        'users': users_count,
+        'subjects': subjects_count,
+        'subscriptions': subscriptions_count,
+        'revenue': revenue
+    }
+
+@api_router.get("/admin/users")
+async def get_all_users(admin: dict = Depends(get_admin_user)):
+    """Get all users"""
+    users = await db.users.find({}, {'_id': 0, 'password': 0}).to_list(1000)
+    return users
+
+@api_router.get("/admin/subscriptions")
+async def get_all_subscriptions(admin: dict = Depends(get_admin_user)):
+    """Get all subscriptions"""
+    subscriptions = await db.subscriptions.find({}, {'_id': 0}).to_list(1000)
+    return subscriptions
+
+@api_router.get("/admin/payments")
+async def get_all_payments(admin: dict = Depends(get_admin_user)):
+    """Get all payments"""
+    payments = await db.payments.find({}, {'_id': 0}).to_list(1000)
+    return payments
+
+@api_router.get("/admin/materials")
+async def get_all_materials(admin: dict = Depends(get_admin_user)):
+    """Get all materials"""
+    materials = await db.materials.find({}, {'_id': 0}).to_list(1000)
+    return materials
+
+@api_router.post("/admin/subjects")
+async def create_subject(
+    board: str,
+    class_name: str,
+    subject_name: str,
+    price: int,
+    duration_months: int = 6,
+    admin: dict = Depends(get_admin_user)
+):
+    """Create new subject"""
+    subject_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{subject_name.lower()}"
+    
+    subject = {
+        'id': subject_id,
+        'board': board,
+        'class_name': class_name,
+        'subject_name': subject_name,
+        'price': price,
+        'duration_months': duration_months
+    }
+    
+    await db.subjects.insert_one(subject)
+    return {'message': 'Subject created successfully', 'subject': subject}
+
+@api_router.delete("/admin/subjects/{subject_id}")
+async def delete_subject(subject_id: str, admin: dict = Depends(get_admin_user)):
+    """Delete subject"""
+    result = await db.subjects.delete_one({'id': subject_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    
+    # Also delete associated materials
+    await db.materials.delete_many({'subject_id': subject_id})
+    
+    return {'message': 'Subject deleted successfully'}
+
+@api_router.post("/admin/materials")
+async def create_material(
+    subject_id: str,
+    title: str,
+    type: str,
+    link: str,
+    description: str = "",
+    admin: dict = Depends(get_admin_user)
+):
+    """Create new material"""
+    import uuid
+    material_id = f"mat-{str(uuid.uuid4())[:8]}"
+    
+    material = {
+        'id': material_id,
+        'subject_id': subject_id,
+        'title': title,
+        'type': type,
+        'link': link,
+        'description': description
+    }
+    
+    await db.materials.insert_one(material)
+    return {'message': 'Material created successfully', 'material': material}
+
+@api_router.delete("/admin/materials/{material_id}")
+async def delete_material(material_id: str, admin: dict = Depends(get_admin_user)):
+    """Delete material"""
+    result = await db.materials.delete_one({'id': material_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Material not found")
+    
+    return {'message': 'Material deleted successfully'}
+
 # Include router
 app.include_router(api_router)
 
