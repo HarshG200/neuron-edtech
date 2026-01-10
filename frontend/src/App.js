@@ -78,6 +78,10 @@ function App() {
               element={user ? <MyPlans /> : <Navigate to="/auth" />}
             />
             <Route
+              path="/settings"
+              element={user ? <Settings /> : <Navigate to="/auth" />}
+            />
+            <Route
               path="/materials/:subjectId"
               element={user ? <MaterialViewer /> : <Navigate to="/auth" />}
             />
