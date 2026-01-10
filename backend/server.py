@@ -196,6 +196,63 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         'city': current_user['city']
     }
 
+@api_router.put("/auth/update-profile")
+async def update_profile(
+    name: str = None,
+    phone: str = None,
+    city: str = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update user profile"""
+    update_data = {}
+    if name:
+        update_data['name'] = name
+    if phone:
+        update_data['phone'] = phone
+    if city:
+        update_data['city'] = city
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No data to update")
+    
+    await db.users.update_one(
+        {'email': current_user['email']},
+        {'$set': update_data}
+    )
+    
+    # Get updated user
+    updated_user = await db.users.find_one({'email': current_user['email']}, {'_id': 0, 'password': 0})
+    
+    return {
+        'message': 'Profile updated successfully',
+        'user': {
+            'email': updated_user['email'],
+            'name': updated_user['name'],
+            'phone': updated_user['phone'],
+            'city': updated_user['city']
+        }
+    }
+
+@api_router.put("/auth/change-password")
+async def change_password(
+    current_password: str,
+    new_password: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Change user password"""
+    # Verify current password
+    user = await db.users.find_one({'email': current_user['email']})
+    if not verify_password(current_password, user['password']):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    # Update password
+    await db.users.update_one(
+        {'email': current_user['email']},
+        {'$set': {'password': hash_password(new_password)}}
+    )
+    
+    return {'message': 'Password changed successfully'}
+
 # ============= Subject Routes =============
 
 @api_router.get("/subjects", response_model=List[Subject])
