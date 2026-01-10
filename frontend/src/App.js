@@ -6,6 +6,7 @@ import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import MyPlans from './pages/MyPlans';
 import MaterialViewer from './pages/MaterialViewer';
+import Settings from './pages/Settings';
 import { Toaster } from 'sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
