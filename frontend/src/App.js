@@ -66,6 +66,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
+            <Route path="/admin" element={<AdminPage />} />
             <Route
               path="/auth"
               element={!user ? <AuthPage /> : <Navigate to="/dashboard" />}
