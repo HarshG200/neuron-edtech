@@ -1,0 +1,188 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { API } from '../../../App';
+import { toast } from 'sonner';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../../components/ui/dialog';
+import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+
+const SubjectsTab = ({ onUpdate }) => {
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    board: 'ICSE',
+    class_name: 'Class 10',
+    subject_name: '',
+    price: '',
+    duration_months: 6
+  });
+
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
+
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get(`${API}/subjects`);
+      setSubjects(response.data);
+    } catch (error) {
+      toast.error('Failed to load subjects');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('admin_token');
+      await axios.post(`${API}/admin/subjects`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Subject added successfully');
+      setIsDialogOpen(false);
+      setFormData({ board: 'ICSE', class_name: 'Class 10', subject_name: '', price: '', duration_months: 6 });
+      fetchSubjects();
+      onUpdate();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to add subject');
+    }
+  };
+
+  const handleDelete = async (subjectId) => {
+    if (!window.confirm('Are you sure you want to delete this subject?')) return;
+    
+    try {
+      const token = localStorage.getItem('admin_token');
+      await axios.delete(`${API}/admin/subjects/${subjectId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Subject deleted successfully');
+      fetchSubjects();
+      onUpdate();
+    } catch (error) {
+      toast.error('Failed to delete subject');
+    }
+  };
+
+  return (
+    <Card className="shadow-xl border-0">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-2xl">Subject Management</CardTitle>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-600">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Subject
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Subject</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Board</label>
+                  <Select value={formData.board} onValueChange={(value) => setFormData({...formData, board: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ICSE">ICSE</SelectItem>
+                      <SelectItem value="CBSE">CBSE</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Class</label>
+                  <Input
+                    value={formData.class_name}
+                    onChange={(e) => setFormData({...formData, class_name: e.target.value})}
+                    placeholder="Class 10"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Subject Name</label>
+                  <Input
+                    value={formData.subject_name}
+                    onChange={(e) => setFormData({...formData, subject_name: e.target.value})}
+                    placeholder="Biology"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Price (₹)</label>
+                  <Input
+                    type="number"
+                    value={formData.price}
+                    onChange={(e) => setFormData({...formData, price: e.target.value})}
+                    placeholder="500"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Duration (months)</label>
+                  <Input
+                    type="number"
+                    value={formData.duration_months}
+                    onChange={(e) => setFormData({...formData, duration_months: parseInt(e.target.value)})}
+                    placeholder="6"
+                    required
+                  />
+                </div>
+                <Button type="submit" className="w-full">Add Subject</Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <div className="text-center py-8">Loading subjects...</div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Board</TableHead>
+                <TableHead>Class</TableHead>
+                <TableHead>Subject</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {subjects.map((subject) => (
+                <TableRow key={subject.id}>
+                  <TableCell>{subject.board}</TableCell>
+                  <TableCell>{subject.class_name}</TableCell>
+                  <TableCell className="font-medium">{subject.subject_name}</TableCell>
+                  <TableCell>₹{subject.price}</TableCell>
+                  <TableCell>{subject.duration_months} months</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(subject.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+export default SubjectsTab;
