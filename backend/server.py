@@ -265,12 +265,12 @@ async def get_subjects():
 async def seed_subjects():
     """Seed initial subjects"""
     subjects = [
-        {'id': 'icse-10-biology', 'board': 'ICSE', 'class_name': 'Class 10', 'subject_name': 'Biology', 'price': 500, 'duration_months': 6},
-        {'id': 'icse-10-chemistry', 'board': 'ICSE', 'class_name': 'Class 10', 'subject_name': 'Chemistry', 'price': 500, 'duration_months': 6},
-        {'id': 'icse-10-physics', 'board': 'ICSE', 'class_name': 'Class 10', 'subject_name': 'Physics', 'price': 600, 'duration_months': 6},
-        {'id': 'cbse-10-biology', 'board': 'CBSE', 'class_name': 'Class 10', 'subject_name': 'Biology', 'price': 500, 'duration_months': 6},
-        {'id': 'cbse-10-chemistry', 'board': 'CBSE', 'class_name': 'Class 10', 'subject_name': 'Chemistry', 'price': 500, 'duration_months': 6},
-        {'id': 'cbse-10-physics', 'board': 'CBSE', 'class_name': 'Class 10', 'subject_name': 'Physics', 'price': 600, 'duration_months': 6},
+        {'id': 'icse-10-biology', 'board': 'ICSE', 'class_name': 'Class 10', 'subject_name': 'Biology', 'price': 500, 'duration_months': 6, 'is_visible': True},
+        {'id': 'icse-10-chemistry', 'board': 'ICSE', 'class_name': 'Class 10', 'subject_name': 'Chemistry', 'price': 500, 'duration_months': 6, 'is_visible': True},
+        {'id': 'icse-10-physics', 'board': 'ICSE', 'class_name': 'Class 10', 'subject_name': 'Physics', 'price': 600, 'duration_months': 6, 'is_visible': True},
+        {'id': 'cbse-10-biology', 'board': 'CBSE', 'class_name': 'Class 10', 'subject_name': 'Biology', 'price': 500, 'duration_months': 6, 'is_visible': True},
+        {'id': 'cbse-10-chemistry', 'board': 'CBSE', 'class_name': 'Class 10', 'subject_name': 'Chemistry', 'price': 500, 'duration_months': 6, 'is_visible': True},
+        {'id': 'cbse-10-physics', 'board': 'CBSE', 'class_name': 'Class 10', 'subject_name': 'Physics', 'price': 600, 'duration_months': 6, 'is_visible': True},
     ]
     
     await db.subjects.delete_many({})
