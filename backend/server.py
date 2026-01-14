@@ -745,10 +745,13 @@ async def create_subject(
 @api_router.put("/admin/subjects/{subject_id}/visibility")
 async def toggle_subject_visibility(
     subject_id: str,
-    is_visible: bool,
+    request: Request,
     admin: dict = Depends(get_admin_user)
 ):
     """Toggle subject visibility on client side"""
+    body = await request.json()
+    is_visible = body.get('is_visible', True)
+    
     result = await db.subjects.update_one(
         {'id': subject_id},
         {'$set': {'is_visible': is_visible}}
