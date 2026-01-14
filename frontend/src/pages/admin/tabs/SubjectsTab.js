@@ -7,8 +7,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../../components/ui/dialog';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import { Switch } from '../../../components/ui/switch';
+import { Badge } from '../../../components/ui/badge';
 
 const SubjectsTab = ({ onUpdate }) => {
   const [subjects, setSubjects] = useState([]);
