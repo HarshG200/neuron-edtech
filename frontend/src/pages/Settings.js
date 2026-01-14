@@ -361,6 +361,8 @@ const Settings = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      <Footer />
     </div>
   );
 };
