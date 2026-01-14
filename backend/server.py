@@ -722,6 +722,7 @@ async def create_subject(
     subject_name: str,
     price: int,
     duration_months: int = 6,
+    is_visible: bool = True,
     admin: dict = Depends(get_admin_user)
 ):
     """Create new subject"""
@@ -733,11 +734,29 @@ async def create_subject(
         'class_name': class_name,
         'subject_name': subject_name,
         'price': price,
-        'duration_months': duration_months
+        'duration_months': duration_months,
+        'is_visible': is_visible
     }
     
     await db.subjects.insert_one(subject)
     return {'message': 'Subject created successfully', 'subject': subject}
+
+@api_router.put("/admin/subjects/{subject_id}/visibility")
+async def toggle_subject_visibility(
+    subject_id: str,
+    is_visible: bool,
+    admin: dict = Depends(get_admin_user)
+):
+    """Toggle subject visibility on client side"""
+    result = await db.subjects.update_one(
+        {'id': subject_id},
+        {'$set': {'is_visible': is_visible}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    
+    return {'message': f'Subject {"shown" if is_visible else "hidden"} successfully'}
 
 @api_router.delete("/admin/subjects/{subject_id}")
 async def delete_subject(subject_id: str, admin: dict = Depends(get_admin_user)):
