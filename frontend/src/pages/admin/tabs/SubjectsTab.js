@@ -86,6 +86,21 @@ const SubjectsTab = ({ onUpdate }) => {
     }
   };
 
+  const handleToggleVisibility = async (subjectId, currentVisibility) => {
+    try {
+      const token = localStorage.getItem('admin_token');
+      await axios.put(
+        `${API}/admin/subjects/${subjectId}/visibility`,
+        { is_visible: !currentVisibility },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success(`Subject ${!currentVisibility ? 'shown' : 'hidden'} on client side`);
+      fetchSubjects();
+    } catch (error) {
+      toast.error('Failed to toggle visibility');
+    }
+  };
+
   return (
     <Card className="shadow-xl border-0">
       <CardHeader>
