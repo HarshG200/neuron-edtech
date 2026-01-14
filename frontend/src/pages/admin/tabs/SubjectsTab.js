@@ -12,10 +12,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 
 const SubjectsTab = ({ onUpdate }) => {
   const [subjects, setSubjects] = useState([]);
+  const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
-    board: 'ICSE',
+    board: '',
     class_name: 'Class 10',
     subject_name: '',
     price: '',
@@ -24,7 +25,20 @@ const SubjectsTab = ({ onUpdate }) => {
 
   useEffect(() => {
     fetchSubjects();
+    fetchBoards();
   }, []);
+
+  const fetchBoards = async () => {
+    try {
+      const token = localStorage.getItem('admin_token');
+      const response = await axios.get(`${API}/admin/boards`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setBoards(response.data);
+    } catch (error) {
+      console.error('Failed to load boards');
+    }
+  };
 
   const fetchSubjects = async () => {
     try {
