@@ -105,13 +105,19 @@ const SubjectsTab = ({ onUpdate }) => {
                   <label className="text-sm font-medium">Board</label>
                   <Select value={formData.board} onValueChange={(value) => setFormData({...formData, board: value})}>
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue placeholder="Select board" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ICSE">ICSE</SelectItem>
-                      <SelectItem value="CBSE">CBSE</SelectItem>
+                      {boards.map(board => (
+                        <SelectItem key={board.id} value={board.name}>
+                          {board.name} - {board.full_name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
+                  {boards.length === 0 && (
+                    <p className="text-xs text-orange-600">⚠️ Please add boards first in the Boards tab</p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Class</label>
