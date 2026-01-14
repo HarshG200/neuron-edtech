@@ -192,17 +192,39 @@ const SubjectsTab = ({ onUpdate }) => {
                 <TableHead>Subject</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Duration</TableHead>
+                <TableHead className="text-center">Visible to Students</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {subjects.map((subject) => (
-                <TableRow key={subject.id}>
+                <TableRow key={subject.id} className={subject.is_visible === false ? 'opacity-50' : ''}>
                   <TableCell>{subject.board}</TableCell>
                   <TableCell>{subject.class_name}</TableCell>
-                  <TableCell className="font-medium">{subject.subject_name}</TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center space-x-2">
+                      <span>{subject.subject_name}</span>
+                      {subject.is_visible === false && (
+                        <Badge variant="secondary" className="text-xs">Hidden</Badge>
+                      )}
+                    </div>
+                  </TableCell>
                   <TableCell>₹{subject.price}</TableCell>
                   <TableCell>{subject.duration_months} months</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center space-x-2">
+                      <Switch
+                        checked={subject.is_visible !== false}
+                        onCheckedChange={() => handleToggleVisibility(subject.id, subject.is_visible !== false)}
+                        data-testid={`visibility-toggle-${subject.id}`}
+                      />
+                      {subject.is_visible !== false ? (
+                        <Eye className="w-4 h-4 text-green-600" />
+                      ) : (
+                        <EyeOff className="w-4 h-4 text-gray-400" />
+                      )}
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <Button
                       variant="destructive"
