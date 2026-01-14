@@ -7,6 +7,7 @@ import { ArrowLeft, FileText, Video, Eye, Download } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import Footer from '../components/Footer';
 
 const Watermark = ({ email }) => {
   return (
