@@ -35,10 +35,10 @@ const AccountMenu = () => {
       <DropdownMenuTrigger asChild>
         <button
           data-testid="account-menu-trigger"
-          className="flex items-center space-x-3 bg-white hover:bg-gray-50 px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200"
+          className="flex items-center space-x-3 bg-white hover:bg-gray-50 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200"
         >
-          <Avatar className="h-9 w-9 ring-2 ring-blue-100">
-            <AvatarFallback className="bg-gradient-to-br from-blue-600 to-purple-600 text-white font-semibold text-sm">
+          <Avatar className="h-9 w-9 ring-2 ring-blue-100 rounded-lg">
+            <AvatarFallback className="bg-gradient-to-br from-blue-600 to-purple-600 text-white font-semibold text-sm rounded-lg">
               {getInitials(user?.name)}
             </AvatarFallback>
           </Avatar>
