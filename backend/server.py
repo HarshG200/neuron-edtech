@@ -575,6 +575,100 @@ async def admin_login(credentials: UserLogin):
     
     return {'token': token, 'message': 'Admin login successful'}
 
+# ============= Board Management =============
+
+@api_router.get("/admin/boards")
+async def get_all_boards(admin: dict = Depends(get_admin_user)):
+    """Get all boards with subject count"""
+    boards = await db.boards.find({}, {'_id': 0}).to_list(1000)
+    
+    # Add subject count for each board
+    for board in boards:
+        subject_count = await db.subjects.count_documents({'board': board['name']})
+        board['subject_count'] = subject_count
+    
+    return boards
+
+@api_router.post("/admin/boards")
+async def create_board(
+    name: str,
+    full_name: str,
+    description: str = "",
+    admin: dict = Depends(get_admin_user)
+):
+    """Create new board"""
+    # Check if board already exists
+    existing = await db.boards.find_one({'name': name.upper()})
+    if existing:
+        raise HTTPException(status_code=400, detail=f"Board {name} already exists")
+    
+    board_id = name.lower().replace(' ', '-')
+    board = {
+        'id': board_id,
+        'name': name.upper(),
+        'full_name': full_name,
+        'description': description,
+        'created_at': datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.boards.insert_one(board)
+    return {'message': 'Board created successfully', 'board': board}
+
+@api_router.put("/admin/boards/{board_id}")
+async def update_board(
+    board_id: str,
+    name: str,
+    full_name: str,
+    description: str = "",
+    admin: dict = Depends(get_admin_user)
+):
+    """Update existing board"""
+    board = await db.boards.find_one({'id': board_id})
+    if not board:
+        raise HTTPException(status_code=404, detail="Board not found")
+    
+    old_name = board['name']
+    new_name = name.upper()
+    
+    # Update board
+    update_data = {
+        'name': new_name,
+        'full_name': full_name,
+        'description': description,
+        'updated_at': datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.boards.update_one({'id': board_id}, {'$set': update_data})
+    
+    # Update all subjects that use this board
+    if old_name != new_name:
+        await db.subjects.update_many(
+            {'board': old_name},
+            {'$set': {'board': new_name}}
+        )
+    
+    return {'message': 'Board updated successfully'}
+
+@api_router.delete("/admin/boards/{board_id}")
+async def delete_board(board_id: str, admin: dict = Depends(get_admin_user)):
+    """Delete board"""
+    board = await db.boards.find_one({'id': board_id})
+    if not board:
+        raise HTTPException(status_code=404, detail="Board not found")
+    
+    # Check if board has subjects
+    subject_count = await db.subjects.count_documents({'board': board['name']})
+    if subject_count > 0:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Cannot delete board. {subject_count} subjects are using this board. Please delete or reassign subjects first."
+        )
+    
+    await db.boards.delete_one({'id': board_id})
+    return {'message': 'Board deleted successfully'}
+
+# ============= Stats & Other Admin Routes =============
+
 @api_router.get("/admin/stats")
 async def get_admin_stats(admin: dict = Depends(get_admin_user)):
     """Get platform statistics"""
