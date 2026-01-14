@@ -257,7 +257,8 @@ async def change_password(
 
 @api_router.get("/subjects", response_model=List[Subject])
 async def get_subjects():
-    subjects = await db.subjects.find({}, {'_id': 0}).to_list(100)
+    # Only return visible subjects for students
+    subjects = await db.subjects.find({'is_visible': {'$ne': False}}, {'_id': 0}).to_list(100)
     return subjects
 
 @api_router.post("/subjects/seed")
