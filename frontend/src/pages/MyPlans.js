@@ -176,6 +176,8 @@ const MyPlans = () => {
           </>
         )}
       </div>
+
+      <Footer />
     </div>
   );
 };
