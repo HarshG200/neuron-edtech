@@ -16,6 +16,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import AccountMenu from '../components/AccountMenu';
+import Footer from '../components/Footer';
 
 const Dashboard = () => {
   const { user, logout } = React.useContext(AuthContext);
