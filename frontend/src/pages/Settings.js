@@ -24,6 +24,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Separator } from '../components/ui/separator';
 import { Badge } from '../components/ui/badge';
+import Footer from '../components/Footer';
 
 const Settings = () => {
   const { user, setUser, logout } = useContext(AuthContext);
