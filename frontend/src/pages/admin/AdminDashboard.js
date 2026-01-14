@@ -10,11 +10,13 @@ import {
   Settings,
   LogOut,
   LayoutDashboard,
+  GraduationCap,
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import UsersTab from './tabs/UsersTab';
+import BoardsTab from './tabs/BoardsTab';
 import SubjectsTab from './tabs/SubjectsTab';
 import MaterialsTab from './tabs/MaterialsTab';
 import SubscriptionsTab from './tabs/SubscriptionsTab';
