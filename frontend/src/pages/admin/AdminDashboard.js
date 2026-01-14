@@ -132,8 +132,12 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
 
         {/* Management Tabs */}
-        <Tabs defaultValue="users" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6">
+        <Tabs defaultValue="boards" className="w-full">
+          <TabsList className="grid w-full grid-cols-6 mb-6">
+            <TabsTrigger value="boards">
+              <GraduationCap className="w-4 h-4 mr-2" />
+              Boards
+            </TabsTrigger>
             <TabsTrigger value="users">
               <Users className="w-4 h-4 mr-2" />
               Users
@@ -155,6 +159,10 @@ const AdminDashboard = ({ onLogout }) => {
               Payments
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="boards">
+            <BoardsTab onUpdate={fetchStats} />
+          </TabsContent>
 
           <TabsContent value="users">
             <UsersTab />
