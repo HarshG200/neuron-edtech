@@ -14,6 +14,7 @@ import {
   TableRow,
 } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
+import Footer from '../components/Footer';
 
 const MyPlans = () => {
   const { user } = React.useContext(AuthContext);
