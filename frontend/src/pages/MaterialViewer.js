@@ -253,6 +253,8 @@ const MaterialViewer = () => {
           </div>
         )}
       </div>
+
+      <Footer />
     </div>
   );
 };
