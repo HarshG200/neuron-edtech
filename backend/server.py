@@ -783,13 +783,16 @@ async def delete_subject(subject_id: str, admin: dict = Depends(get_admin_user))
     
     return {'message': 'Subject deleted successfully'}
 
+class MaterialCreate(BaseModel):
+    subject_id: str
+    title: str
+    type: str
+    link: str
+    description: str = ""
+
 @api_router.post("/admin/materials")
 async def create_material(
-    subject_id: str,
-    title: str,
-    type: str,
-    link: str,
-    description: str = "",
+    material_data: MaterialCreate,
     admin: dict = Depends(get_admin_user)
 ):
     """Create new material"""
@@ -798,11 +801,11 @@ async def create_material(
     
     material = {
         'id': material_id,
-        'subject_id': subject_id,
-        'title': title,
-        'type': type,
-        'link': link,
-        'description': description
+        'subject_id': material_data.subject_id,
+        'title': material_data.title,
+        'type': material_data.type,
+        'link': material_data.link,
+        'description': material_data.description
     }
     
     await db.materials.insert_one(material)
