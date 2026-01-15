@@ -722,27 +722,30 @@ async def get_all_materials(admin: dict = Depends(get_admin_user)):
     materials = await db.materials.find({}, {'_id': 0}).to_list(1000)
     return materials
 
+class SubjectCreate(BaseModel):
+    board: str
+    class_name: str
+    subject_name: str
+    price: int
+    duration_months: int = 6
+    is_visible: bool = True
+
 @api_router.post("/admin/subjects")
 async def create_subject(
-    board: str,
-    class_name: str,
-    subject_name: str,
-    price: int,
-    duration_months: int = 6,
-    is_visible: bool = True,
+    subject_data: SubjectCreate,
     admin: dict = Depends(get_admin_user)
 ):
     """Create new subject"""
-    subject_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{subject_name.lower()}"
+    subject_id = f"{subject_data.board.lower()}-{subject_data.class_name.lower().replace(' ', '-')}-{subject_data.subject_name.lower()}"
     
     subject = {
         'id': subject_id,
-        'board': board,
-        'class_name': class_name,
-        'subject_name': subject_name,
-        'price': price,
-        'duration_months': duration_months,
-        'is_visible': is_visible
+        'board': subject_data.board,
+        'class_name': subject_data.class_name,
+        'subject_name': subject_data.subject_name,
+        'price': subject_data.price,
+        'duration_months': subject_data.duration_months,
+        'is_visible': subject_data.is_visible
     }
     
     await db.subjects.insert_one(subject)
