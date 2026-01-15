@@ -612,7 +612,7 @@ async def create_board(
         raise HTTPException(status_code=400, detail=f"Board {board_data.name} already exists")
     
     board_id = board_data.name.lower().replace(' ', '-')
-    board = {
+    board_doc = {
         'id': board_id,
         'name': board_data.name.upper(),
         'full_name': board_data.full_name,
@@ -620,8 +620,18 @@ async def create_board(
         'created_at': datetime.now(timezone.utc).isoformat()
     }
     
-    await db.boards.insert_one(board)
-    return {'message': 'Board created successfully', 'board': board}
+    await db.boards.insert_one(board_doc)
+    
+    # Return without _id
+    return {
+        'message': 'Board created successfully',
+        'board': {
+            'id': board_doc['id'],
+            'name': board_doc['name'],
+            'full_name': board_doc['full_name'],
+            'description': board_doc['description']
+        }
+    }
 
 @api_router.put("/admin/boards/{board_id}")
 async def update_board(
