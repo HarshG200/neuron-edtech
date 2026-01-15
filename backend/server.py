@@ -748,7 +748,7 @@ async def create_subject(
     """Create new subject"""
     subject_id = f"{subject_data.board.lower()}-{subject_data.class_name.lower().replace(' ', '-')}-{subject_data.subject_name.lower()}"
     
-    subject = {
+    subject_doc = {
         'id': subject_id,
         'board': subject_data.board,
         'class_name': subject_data.class_name,
@@ -758,8 +758,20 @@ async def create_subject(
         'is_visible': subject_data.is_visible
     }
     
-    await db.subjects.insert_one(subject)
-    return {'message': 'Subject created successfully', 'subject': subject}
+    await db.subjects.insert_one(subject_doc)
+    
+    # Return without _id
+    return {
+        'message': 'Subject created successfully',
+        'subject': {
+            'id': subject_doc['id'],
+            'board': subject_doc['board'],
+            'class_name': subject_doc['class_name'],
+            'subject_name': subject_doc['subject_name'],
+            'price': subject_doc['price'],
+            'duration_months': subject_doc['duration_months']
+        }
+    }
 
 @api_router.put("/admin/subjects/{subject_id}/visibility")
 async def toggle_subject_visibility(
