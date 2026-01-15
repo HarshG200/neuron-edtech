@@ -821,7 +821,7 @@ async def create_material(
     import uuid
     material_id = f"mat-{str(uuid.uuid4())[:8]}"
     
-    material = {
+    material_doc = {
         'id': material_id,
         'subject_id': material_data.subject_id,
         'title': material_data.title,
@@ -830,8 +830,20 @@ async def create_material(
         'description': material_data.description
     }
     
-    await db.materials.insert_one(material)
-    return {'message': 'Material created successfully', 'material': material}
+    await db.materials.insert_one(material_doc)
+    
+    # Return without _id
+    return {
+        'message': 'Material created successfully',
+        'material': {
+            'id': material_doc['id'],
+            'subject_id': material_doc['subject_id'],
+            'title': material_doc['title'],
+            'type': material_doc['type'],
+            'link': material_doc['link'],
+            'description': material_doc['description']
+        }
+    }
 
 @api_router.delete("/admin/materials/{material_id}")
 async def delete_material(material_id: str, admin: dict = Depends(get_admin_user)):
