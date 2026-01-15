@@ -44,7 +44,10 @@ const SubjectsTab = ({ onUpdate }) => {
 
   const fetchSubjects = async () => {
     try {
-      const response = await axios.get(`${API}/subjects`);
+      const token = localStorage.getItem('admin_token');
+      const response = await axios.get(`${API}/admin/subjects`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setSubjects(response.data);
     } catch (error) {
       toast.error('Failed to load subjects');
