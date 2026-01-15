@@ -740,6 +740,12 @@ class SubjectCreate(BaseModel):
     duration_months: int = 6
     is_visible: bool = True
 
+@api_router.get("/admin/subjects")
+async def get_all_subjects_admin(admin: dict = Depends(get_admin_user)):
+    """Get all subjects including hidden ones (admin only)"""
+    subjects = await db.subjects.find({}, {'_id': 0}).to_list(1000)
+    return subjects
+
 @api_router.post("/admin/subjects")
 async def create_subject(
     subject_data: SubjectCreate,
