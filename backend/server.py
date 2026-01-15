@@ -578,6 +578,16 @@ async def admin_login(credentials: UserLogin):
 
 # ============= Board Management =============
 
+class BoardCreate(BaseModel):
+    name: str
+    full_name: str
+    description: str = ""
+
+class BoardUpdate(BaseModel):
+    name: str
+    full_name: str
+    description: str = ""
+
 @api_router.get("/admin/boards")
 async def get_all_boards(admin: dict = Depends(get_admin_user)):
     """Get all boards with subject count"""
@@ -592,23 +602,21 @@ async def get_all_boards(admin: dict = Depends(get_admin_user)):
 
 @api_router.post("/admin/boards")
 async def create_board(
-    name: str,
-    full_name: str,
-    description: str = "",
+    board_data: BoardCreate,
     admin: dict = Depends(get_admin_user)
 ):
     """Create new board"""
     # Check if board already exists
-    existing = await db.boards.find_one({'name': name.upper()})
+    existing = await db.boards.find_one({'name': board_data.name.upper()})
     if existing:
-        raise HTTPException(status_code=400, detail=f"Board {name} already exists")
+        raise HTTPException(status_code=400, detail=f"Board {board_data.name} already exists")
     
-    board_id = name.lower().replace(' ', '-')
+    board_id = board_data.name.lower().replace(' ', '-')
     board = {
         'id': board_id,
-        'name': name.upper(),
-        'full_name': full_name,
-        'description': description,
+        'name': board_data.name.upper(),
+        'full_name': board_data.full_name,
+        'description': board_data.description,
         'created_at': datetime.now(timezone.utc).isoformat()
     }
     
@@ -618,9 +626,7 @@ async def create_board(
 @api_router.put("/admin/boards/{board_id}")
 async def update_board(
     board_id: str,
-    name: str,
-    full_name: str,
-    description: str = "",
+    board_data: BoardUpdate,
     admin: dict = Depends(get_admin_user)
 ):
     """Update existing board"""
@@ -629,13 +635,13 @@ async def update_board(
         raise HTTPException(status_code=404, detail="Board not found")
     
     old_name = board['name']
-    new_name = name.upper()
+    new_name = board_data.name.upper()
     
     # Update board
     update_data = {
         'name': new_name,
-        'full_name': full_name,
-        'description': description,
+        'full_name': board_data.full_name,
+        'description': board_data.description,
         'updated_at': datetime.now(timezone.utc).isoformat()
     }
     
