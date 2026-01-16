@@ -31,11 +31,11 @@ const AdminLogin = ({ onLoginSuccess }) => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl border-0">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto bg-gradient-to-br from-purple-600 to-pink-600 p-4 rounded-2xl w-fit">
-            <Shield className="w-12 h-12 text-white" />
+          <div className="mx-auto">
+            <Logo showText={true} textSize="text-3xl" className="w-16 h-16" />
           </div>
           <CardTitle className="text-3xl font-bold">Admin Portal</CardTitle>
-          <CardDescription>Sign in to manage EduStream platform</CardDescription>
+          <CardDescription>Sign in to manage Neuron platform</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
