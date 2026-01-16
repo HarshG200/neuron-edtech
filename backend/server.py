@@ -485,27 +485,30 @@ async def payment_webhook(request: Request):
         return {'status': 'error', 'message': str(e)}
 
 @api_router.post("/payments/verify")
-async def verify_payment(payment_id: str, order_id: str, signature: str, current_user: dict = Depends(get_current_user)):
+async def verify_payment(
+    verification_data: PaymentVerification,
+    current_user: dict = Depends(get_current_user)
+):
     """Verify payment and create subscription"""
     try:
         # Verify signature
         params_dict = {
-            'razorpay_payment_id': payment_id,
-            'razorpay_order_id': order_id,
-            'razorpay_signature': signature
+            'razorpay_payment_id': verification_data.payment_id,
+            'razorpay_order_id': verification_data.order_id,
+            'razorpay_signature': verification_data.signature
         }
         
         razorpay_client.utility.verify_payment_signature(params_dict)
         
         # Get payment record
-        payment = await db.payments.find_one({'order_id': order_id})
+        payment = await db.payments.find_one({'order_id': verification_data.order_id})
         if not payment:
             raise HTTPException(status_code=404, detail="Payment not found")
         
         # Update payment status
         await db.payments.update_one(
-            {'order_id': order_id},
-            {'$set': {'status': 'verified', 'payment_id': payment_id}}
+            {'order_id': verification_data.order_id},
+            {'$set': {'status': 'verified', 'payment_id': verification_data.payment_id}}
         )
         
         # Get subject
@@ -514,7 +517,7 @@ async def verify_payment(payment_id: str, order_id: str, signature: str, current
             raise HTTPException(status_code=404, detail="Subject not found")
         
         # Check if subscription already exists
-        existing_sub = await db.subscriptions.find_one({'order_id': order_id})
+        existing_sub = await db.subscriptions.find_one({'order_id': verification_data.order_id})
         if existing_sub:
             return {'status': 'success', 'message': 'Subscription already created'}
         
@@ -523,7 +526,7 @@ async def verify_payment(payment_id: str, order_id: str, signature: str, current
         end_date = start_date + timedelta(days=subject['duration_months'] * 30)
         
         subscription_doc = {
-            'id': f"sub-{order_id}",
+            'id': f"sub-{verification_data.order_id}",
             'user_email': current_user['email'],
             'subject_id': payment['subject_id'],
             'subject_name': f"{subject['board']} - {subject['class_name']} - {subject['subject_name']}",
@@ -532,7 +535,7 @@ async def verify_payment(payment_id: str, order_id: str, signature: str, current
             'start_date': start_date.isoformat(),
             'end_date': end_date.isoformat(),
             'payment_status': 'completed',
-            'order_id': order_id,
+            'order_id': verification_data.order_id,
             'created_at': datetime.now(timezone.utc).isoformat()
         }
         
