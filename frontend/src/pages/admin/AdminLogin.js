@@ -79,7 +79,7 @@ const AdminLogin = ({ onLoginSuccess }) => {
             </Button>
           </form>
           <div className="mt-4 text-center text-sm text-gray-500">
-            <p>Demo: admin@edustream.com / admin123</p>
+            <p>Demo: admin@neuronlearn.com / admin123</p>
           </div>
         </CardContent>
       </Card>
