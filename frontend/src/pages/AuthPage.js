@@ -56,7 +56,7 @@ const AuthPage = () => {
       <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Branding */}
         <div className="hidden lg:block space-y-6">
-          <Logo className="w-24 h-24" />
+          <Logo className="h-16" />
           <h2 className="text-5xl font-extrabold text-gray-900 leading-tight">
             Master Your
             <br />
@@ -84,7 +84,7 @@ const AuthPage = () => {
         <Card className="shadow-2xl border-0">
           <CardHeader className="space-y-1 pb-6">
             <div className="lg:hidden flex items-center justify-center mb-4">
-              <Logo className="w-16 h-16" />
+              <Logo className="h-14" />
             </div>
             <CardTitle className="text-2xl font-bold text-center">Get Started</CardTitle>
             <CardDescription className="text-center">
