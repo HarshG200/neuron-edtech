@@ -1,6 +1,7 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Shield, FileText, Facebook, Twitter, Instagram, Linkedin, BookOpen } from 'lucide-react';
+import { Mail, Phone, MapPin, Shield, FileText, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Separator } from './ui/separator';
+import Logo from './Logo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
