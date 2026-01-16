@@ -160,7 +160,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-center md:text-left">
             <p className="text-gray-400 text-sm">
-              © {currentYear} EduStream. All rights reserved.
+              © {currentYear} Neuron. All rights reserved.
             </p>
             <p className="text-gray-500 text-xs mt-1">
               Made with ❤️ for students across India
