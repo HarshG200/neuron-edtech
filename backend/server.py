@@ -101,6 +101,11 @@ class PaymentOrderResponse(BaseModel):
     currency: str
     subject_id: str
 
+class PaymentVerification(BaseModel):
+    payment_id: str
+    order_id: str
+    signature: str
+
 # ============= Auth Functions =============
 
 def hash_password(password: str) -> str:
