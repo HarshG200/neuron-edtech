@@ -12,12 +12,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl">
-                <BookOpen className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold">EduStream</h3>
-            </div>
+            <Logo showText={true} textSize="text-2xl" className="w-8 h-8" />
             <p className="text-gray-300 text-sm leading-relaxed">
               Premium study materials and video lectures for Class 10 students. Excel in your exams with our comprehensive learning resources.
             </p>
