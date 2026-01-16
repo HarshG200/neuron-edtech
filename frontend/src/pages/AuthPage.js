@@ -56,18 +56,11 @@ const AuthPage = () => {
       <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Branding */}
         <div className="hidden lg:block space-y-6">
-          <div className="flex items-center space-x-3">
-            <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-4 rounded-2xl">
-              <BookOpen className="w-10 h-10 text-white" />
-            </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              EduStream
-            </h1>
-          </div>
+          <Logo showText={true} textSize="text-4xl" className="w-12 h-12" />
           <h2 className="text-5xl font-extrabold text-gray-900 leading-tight">
             Master Your
             <br />
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
               Class 10 Subjects
             </span>
           </h2>
