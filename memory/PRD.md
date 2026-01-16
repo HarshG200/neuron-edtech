@@ -4,10 +4,11 @@
 A production-grade EdTech platform for Class 10 students to access study materials, video lectures, and comprehensive notes with a subscription-based model.
 
 ## Tech Stack
-- **Frontend:** React 19, Vite, Tailwind CSS, Shadcn/UI, Lucide-React
+- **Frontend:** React 19, **Vite** (migrated from CRA), Tailwind CSS, Shadcn/UI, Lucide-React
 - **Backend:** FastAPI, MongoDB (pymongo)
 - **Payments:** Razorpay Integration
 - **Authentication:** JWT-based
+- **Build Tool:** Vite 6.x (for React 19 compatibility)
 
 ## Core Features
 
