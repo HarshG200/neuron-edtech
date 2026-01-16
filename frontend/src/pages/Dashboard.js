@@ -62,10 +62,10 @@ const Dashboard = () => {
       });
 
       const options = {
-        key: process.env.REACT_APP_RAZORPAY_KEY_ID || 'rzp_test_YourKeyId',
+        key: process.env.REACT_APP_RAZORPAY_KEY_ID || 'rzp_test_S4akkTCJTwt4qA',
         amount: orderResponse.data.amount * 100,
         currency: 'INR',
-        name: 'EduStream',
+        name: 'Neuron',
         description: `${subject.board} - ${subject.class_name} - ${subject.subject_name}`,
         order_id: orderResponse.data.order_id,
         handler: async function (response) {
