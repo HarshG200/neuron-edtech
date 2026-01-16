@@ -83,11 +83,8 @@ const AuthPage = () => {
         {/* Right side - Auth Forms */}
         <Card className="shadow-2xl border-0">
           <CardHeader className="space-y-1 pb-6">
-            <div className="lg:hidden flex items-center justify-center space-x-3 mb-4">
-              <Logo className="w-12 h-12" />
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                Neuron
-              </h1>
+            <div className="lg:hidden flex items-center justify-center mb-4">
+              <Logo className="w-16 h-16" />
             </div>
             <CardTitle className="text-2xl font-bold text-center">Get Started</CardTitle>
             <CardDescription className="text-center">
