@@ -31,8 +31,8 @@ const AdminLogin = ({ onLoginSuccess }) => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl border-0">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto">
-            <Logo className="w-24 h-24" />
+          <div className="mx-auto flex justify-center">
+            <Logo className="h-20" />
           </div>
           <CardTitle className="text-2xl font-bold">Admin Portal</CardTitle>
           <CardDescription>Sign in to manage the platform</CardDescription>
