@@ -44,14 +44,14 @@ A production-grade EdTech platform for Class 10 students to access study materia
 - CRUD for Boards, Subjects, Materials
 - View Users, Subscriptions, Payments
 - Subject visibility toggle
+- Tab Order: Boards → Users → Subjects → Materials → Subscriptions → Payments
 
 #### Branding & UI
-- Neuron branding with logo
+- Neuron branding with new logo (Book with neurons - "Learn differently. By a doctor")
+- Logo visible on all pages (Auth, Dashboard, Admin)
 - Modern slate/indigo palette
-- Simplified footer with:
-  - Contact information (Email, Phone, Address)
-  - Privacy policy notice
-  - Links to policies (Privacy, Terms, Refund, Cancellation)
+- Compact footer with contact info, privacy notice, and policy links
+- Consistent max-w-7xl containers across all pages
 
 ### 🟡 Pending Features (P1-P2)
 
@@ -75,41 +75,18 @@ subscriptions: {user_id, subject_id, expires_at, created_at, razorpay_payment_id
 payments: {user_id, order_id, amount, created_at}
 ```
 
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-
-### User Profile
-- `GET /api/profile` - Get user profile
-- `PUT /api/profile` - Update profile
-- `POST /api/profile/password` - Change password
-
-### Subjects & Materials
-- `GET /api/subjects` - Get all visible subjects
-- `GET /api/materials/{subject_id}` - Get materials for subscribed subject
-
-### Payments
-- `POST /api/payments/order` - Create Razorpay order
-- `POST /api/payments/verify` - Verify payment & create subscription
-
-### Admin
-- `POST /api/admin/login` - Admin login
-- `GET /api/admin/stats` - Dashboard stats
-- CRUD endpoints for boards, subjects, materials
-- GET endpoints for users, subscriptions, payments
-
 ## Key Files
 - `/app/backend/server.py` - All backend logic
 - `/app/frontend/src/App.js` - Main entry, routing
 - `/app/frontend/src/pages/Dashboard.js` - Student dashboard
 - `/app/frontend/src/pages/MaterialViewer.js` - Material viewer with protection
 - `/app/frontend/src/pages/admin/` - Admin panel components
-- `/app/frontend/src/components/Footer.js` - Simplified footer
+- `/app/frontend/src/components/Footer.js` - Compact footer
+- `/app/frontend/src/components/Logo.js` - Logo component
+- `/app/frontend/public/neuron-logo.png` - Updated logo image
 
 ## Test Credentials
-- **Admin:** admin@edustream.com / admin
+- **Admin:** admin@neuronlearn.com / admin123
 - **User:** Create via registration
 
 ---
