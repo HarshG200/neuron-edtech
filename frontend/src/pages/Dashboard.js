@@ -4,7 +4,6 @@ import { API, AuthContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import {
-  BookOpen,
   FileText,
   ShoppingCart,
   CheckCircle,
@@ -17,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Badge } from '../components/ui/badge';
 import AccountMenu from '../components/AccountMenu';
 import Footer from '../components/Footer';
+import Logo from '../components/Logo';
 
 const Dashboard = () => {
   const { user, logout } = React.useContext(AuthContext);
