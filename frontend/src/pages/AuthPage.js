@@ -56,7 +56,12 @@ const AuthPage = () => {
       <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Branding */}
         <div className="hidden lg:block space-y-6">
-          <Logo showText={true} textSize="text-4xl" className="w-12 h-12" />
+          <div className="flex items-center space-x-4">
+            <Logo className="w-16 h-16" />
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              Neuron
+            </h1>
+          </div>
           <h2 className="text-5xl font-extrabold text-gray-900 leading-tight">
             Master Your
             <br />
