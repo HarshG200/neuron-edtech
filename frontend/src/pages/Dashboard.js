@@ -10,6 +10,7 @@ import {
   Loader2,
   User,
   LogOut,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
