@@ -15,6 +15,7 @@ import {
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import Logo from '../../components/Logo';
 import UsersTab from './tabs/UsersTab';
 import BoardsTab from './tabs/BoardsTab';
 import SubjectsTab from './tabs/SubjectsTab';
