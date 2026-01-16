@@ -20,6 +20,23 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent printing protected content */
+@media print {
+  .protected-content,
+  .protected-content * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  body::after {
+    content: "Printing is disabled for this content.";
+    display: block;
+    font-size: 24px;
+    text-align: center;
+    padding: 100px;
+  }
 }
 
 /* Custom scrollbar */
