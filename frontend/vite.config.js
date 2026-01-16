@@ -29,7 +29,10 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       host: '0.0.0.0',
       strictPort: true,
-      allowedHosts: 'all',
+      allowedHosts: ['.emergentagent.com', 'localhost'],
+      hmr: {
+        host: 'localhost',
+      },
     },
     preview: {
       port: 3000,
