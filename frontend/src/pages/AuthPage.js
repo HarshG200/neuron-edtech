@@ -83,13 +83,8 @@ const AuthPage = () => {
         {/* Right side - Auth Forms */}
         <Card className="shadow-2xl border-0">
           <CardHeader className="space-y-1 pb-6">
-            <div className="lg:hidden flex items-center justify-center space-x-2 mb-4">
-              <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-3 rounded-xl">
-                <BookOpen className="w-8 h-8 text-white" />
-              </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                EduStream
-              </h1>
+            <div className="lg:hidden flex items-center justify-center mb-4">
+              <Logo showText={true} textSize="text-3xl" className="w-10 h-10" />
             </div>
             <CardTitle className="text-2xl font-bold text-center">Get Started</CardTitle>
             <CardDescription className="text-center">
