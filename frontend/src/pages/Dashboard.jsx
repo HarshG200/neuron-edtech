@@ -115,7 +115,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Logo className="h-14" />
@@ -137,7 +137,7 @@ const Dashboard = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="w-full max-w-[1400px] mx-auto px-6 lg:px-8 py-12 flex-1">
         <div className="mb-12 text-center">
           <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
             Available <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Subjects</span>
@@ -147,7 +147,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="subjects-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-testid="subjects-grid">
           {subjects.map((subject) => {
             const hasSubscription = hasActiveSubscription(subject.id);
             return (
