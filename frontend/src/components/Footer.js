@@ -127,7 +127,7 @@ const Footer = () => {
                 <div>
                   <p className="text-sm text-gray-400">Email</p>
                   <a href="mailto:support@edustream.com" className="text-gray-300 hover:text-white transition-colors">
-                    support@edustream.com
+                    support@neuronlearn.com
                   </a>
                 </div>
               </li>
