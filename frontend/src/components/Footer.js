@@ -1,208 +1,92 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Shield, FileText, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Shield } from 'lucide-react';
 import { Separator } from './ui/separator';
-import Logo from './Logo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 text-white mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <Logo className="w-10 h-10" />
-              <h3 className="text-2xl font-bold">Neuron</h3>
-            </div>
-            <p className="text-gray-300 text-sm leading-relaxed">
-              Premium study materials and video lectures for Class 10 students. Excel in your exams with our comprehensive learning resources.
-            </p>
-            <div className="flex space-x-3">
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://linkedin.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Contact Information */}
+        <div className="max-w-3xl mx-auto">
+          <h3 className="text-2xl font-bold text-center mb-6">Contact Us</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="flex flex-col items-center text-center space-y-2">
+              <div className="bg-white/10 p-3 rounded-lg">
+                <Mail className="w-6 h-6 text-blue-400" />
+              </div>
+              <p className="text-sm text-gray-400">Email</p>
+              <a href="mailto:support@neuronlearn.com" className="text-gray-200 hover:text-white transition-colors">
+                support@neuronlearn.com
               </a>
             </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <a href="/dashboard" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <span className="w-1 h-1 bg-blue-400 rounded-full"></span>
-                  <span>Dashboard</span>
-                </a>
-              </li>
-              <li>
-                <a href="/my-plans" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <span className="w-1 h-1 bg-blue-400 rounded-full"></span>
-                  <span>My Plans</span>
-                </a>
-              </li>
-              <li>
-                <a href="/settings" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <span className="w-1 h-1 bg-blue-400 rounded-full"></span>
-                  <span>Account Settings</span>
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <span className="w-1 h-1 bg-blue-400 rounded-full"></span>
-                  <span>FAQs</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2">
-              <li>
-                <a href="#privacy" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <Shield className="w-4 h-4" />
-                  <span>Privacy Policy</span>
-                </a>
-              </li>
-              <li>
-                <a href="#terms" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <FileText className="w-4 h-4" />
-                  <span>Terms of Service</span>
-                </a>
-              </li>
-              <li>
-                <a href="#refund" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <FileText className="w-4 h-4" />
-                  <span>Refund Policy</span>
-                </a>
-              </li>
-              <li>
-                <a href="#cancellation" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                  <FileText className="w-4 h-4" />
-                  <span>Cancellation Policy</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start space-x-3">
-                <Mail className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-gray-400">Email</p>
-                  <a href="mailto:support@edustream.com" className="text-gray-300 hover:text-white transition-colors">
-                    support@neuronlearn.com
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-start space-x-3">
-                <Phone className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-gray-400">Phone</p>
-                  <a href="tel:+919876543210" className="text-gray-300 hover:text-white transition-colors">
-                    +91 98765 43210
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-start space-x-3">
-                <MapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-gray-400">Address</p>
-                  <p className="text-gray-300 text-sm">
-                    123 Education Street,<br />
-                    Mumbai, Maharashtra 400001
-                  </p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <Separator className="my-8 bg-white/10" />
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="text-center md:text-left">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} Neuron. All rights reserved.
-            </p>
-            <p className="text-gray-500 text-xs mt-1">
-              Made with ❤️ for students across India
-            </p>
-          </div>
-          <div className="flex items-center space-x-4 text-sm text-gray-400">
-            <a href="#privacy" className="hover:text-white transition-colors">
-              Privacy
-            </a>
-            <span>•</span>
-            <a href="#terms" className="hover:text-white transition-colors">
-              Terms
-            </a>
-            <span>•</span>
-            <a href="#cookies" className="hover:text-white transition-colors">
-              Cookies
-            </a>
-          </div>
-        </div>
-
-        {/* Privacy Notice */}
-        <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
-          <div className="flex items-start space-x-3">
-            <Shield className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-            <div>
-              <h5 className="font-semibold text-sm mb-1">Your Privacy Matters</h5>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                We collect and use your data only to provide access to our services. Your information is secure and 
-                will never be shared with third parties. By using this platform, you agree to our{' '}
-                <a href="#privacy" className="text-blue-400 hover:text-blue-300 underline">
-                  Privacy Policy
-                </a>{' '}
-                and{' '}
-                <a href="#terms" className="text-blue-400 hover:text-blue-300 underline">
-                  Terms of Service
-                </a>.
+            
+            <div className="flex flex-col items-center text-center space-y-2">
+              <div className="bg-white/10 p-3 rounded-lg">
+                <Phone className="w-6 h-6 text-blue-400" />
+              </div>
+              <p className="text-sm text-gray-400">Phone</p>
+              <a href="tel:+919876543210" className="text-gray-200 hover:text-white transition-colors">
+                +91 98765 43210
+              </a>
+            </div>
+            
+            <div className="flex flex-col items-center text-center space-y-2">
+              <div className="bg-white/10 p-3 rounded-lg">
+                <MapPin className="w-6 h-6 text-blue-400" />
+              </div>
+              <p className="text-sm text-gray-400">Address</p>
+              <p className="text-gray-200 text-sm">
+                Mumbai, Maharashtra 400001
               </p>
             </div>
           </div>
+        </div>
+
+        <Separator className="my-6 bg-white/10" />
+
+        {/* Privacy Notice */}
+        <div className="max-w-3xl mx-auto mb-6">
+          <div className="bg-white/5 rounded-lg border border-white/10 p-6">
+            <div className="flex items-start space-x-3">
+              <Shield className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
+              <div>
+                <h5 className="font-semibold text-lg mb-2">Your Privacy Matters</h5>
+                <p className="text-sm text-gray-300 leading-relaxed mb-3">
+                  We collect and use your data only to provide access to our services. Your information is secure and 
+                  will never be shared with third parties without your consent.
+                </p>
+                <div className="flex flex-wrap gap-3 text-sm">
+                  <a href="#privacy" className="text-blue-400 hover:text-blue-300 underline">
+                    Privacy Policy
+                  </a>
+                  <span className="text-gray-500">•</span>
+                  <a href="#terms" className="text-blue-400 hover:text-blue-300 underline">
+                    Terms of Service
+                  </a>
+                  <span className="text-gray-500">•</span>
+                  <a href="#refund" className="text-blue-400 hover:text-blue-300 underline">
+                    Refund Policy
+                  </a>
+                  <span className="text-gray-500">•</span>
+                  <a href="#cancellation" className="text-blue-400 hover:text-blue-300 underline">
+                    Cancellation Policy
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="text-center">
+          <p className="text-gray-400 text-sm">
+            © {currentYear} All rights reserved.
+          </p>
+          <p className="text-gray-500 text-xs mt-1">
+            Made with ❤️ for students across India
+          </p>
         </div>
       </div>
     </footer>
