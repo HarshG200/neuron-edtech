@@ -31,10 +31,13 @@ const AdminLogin = ({ onLoginSuccess }) => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl border-0">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto">
-            <Logo showText={true} textSize="text-3xl" className="w-16 h-16" />
+          <div className="mx-auto flex flex-col items-center space-y-3">
+            <Logo className="w-20 h-20" />
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              Neuron
+            </h1>
           </div>
-          <CardTitle className="text-3xl font-bold">Admin Portal</CardTitle>
+          <CardTitle className="text-2xl font-bold">Admin Portal</CardTitle>
           <CardDescription>Sign in to manage Neuron platform</CardDescription>
         </CardHeader>
         <CardContent>
