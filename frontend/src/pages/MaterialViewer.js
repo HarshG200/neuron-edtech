@@ -30,35 +30,65 @@ const MaterialViewer = () => {
   }, [subjectId]);
 
   useEffect(() => {
-    // Disable right-click
+    // Disable right-click on the entire page when viewing materials
     const handleContextMenu = (e) => {
-      if (selectedMaterial) {
-        e.preventDefault();
-        toast.error('Right-click is disabled for security');
-      }
+      e.preventDefault();
+      toast.error('Right-click is disabled for security');
+      return false;
     };
 
     // Disable keyboard shortcuts
     const handleKeyDown = (e) => {
+      // Disable: Ctrl+S (Save), Ctrl+P (Print), Ctrl+U (View Source), 
+      // F12 (DevTools), Ctrl+Shift+I (DevTools), Ctrl+Shift+C (Inspect), Ctrl+Shift+J (Console)
+      if (
+        (e.ctrlKey && (e.key === 's' || e.key === 'p' || e.key === 'u')) ||
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'C' || e.key === 'c' || e.key === 'J' || e.key === 'j'))
+      ) {
+        e.preventDefault();
+        toast.error('This action is disabled for security');
+        return false;
+      }
+    };
+
+    // Disable text selection on protected content
+    const handleSelectStart = (e) => {
       if (selectedMaterial) {
-        // Disable Ctrl+S, Ctrl+P, F12, etc.
-        if (
-          (e.ctrlKey && (e.key === 's' || e.key === 'p')) ||
-          e.key === 'F12' ||
-          (e.ctrlKey && e.shiftKey && e.key === 'I')
-        ) {
-          e.preventDefault();
-          toast.error('This action is disabled for security');
-        }
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // Disable drag on protected content
+    const handleDragStart = (e) => {
+      if (selectedMaterial) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // Disable copy
+    const handleCopy = (e) => {
+      if (selectedMaterial) {
+        e.preventDefault();
+        toast.error('Copying is disabled for security');
+        return false;
       }
     };
 
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('selectstart', handleSelectStart);
+    document.addEventListener('dragstart', handleDragStart);
+    document.addEventListener('copy', handleCopy);
 
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('selectstart', handleSelectStart);
+      document.removeEventListener('dragstart', handleDragStart);
+      document.removeEventListener('copy', handleCopy);
     };
   }, [selectedMaterial]);
 
