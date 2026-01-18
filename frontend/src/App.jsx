@@ -94,6 +94,10 @@ function App() {
               path="/materials/:subjectId"
               element={user ? <MaterialViewer /> : <Navigate to="/auth" />}
             />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/refund" element={<RefundPolicy />} />
+            <Route path="/cancellation" element={<CancellationPolicy />} />
             <Route path="/" element={<Navigate to={user ? "/dashboard" : "/auth"} />} />
           </Routes>
         </BrowserRouter>
