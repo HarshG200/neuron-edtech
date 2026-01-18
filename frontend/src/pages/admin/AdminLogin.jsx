@@ -46,7 +46,7 @@ const AdminLogin = ({ onLoginSuccess }) => {
                 <Input
                   data-testid="admin-email-input"
                   type="email"
-                  placeholder="admin@edustream.com"
+                  placeholder="admin@neuron.com"
                   className="pl-10"
                   value={credentials.email}
                   onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
