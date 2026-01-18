@@ -136,10 +136,6 @@ const AdminDashboard = ({ onLogout }) => {
               <GraduationCap className="w-4 h-4 mr-1.5" />
               Boards
             </TabsTrigger>
-            <TabsTrigger value="users" className="px-3 py-2 text-sm">
-              <Users className="w-4 h-4 mr-1.5" />
-              Users
-            </TabsTrigger>
             <TabsTrigger value="subjects" className="px-3 py-2 text-sm">
               <BookOpen className="w-4 h-4 mr-1.5" />
               Subjects
@@ -147,6 +143,10 @@ const AdminDashboard = ({ onLogout }) => {
             <TabsTrigger value="materials" className="px-3 py-2 text-sm">
               <FileText className="w-4 h-4 mr-1.5" />
               Materials
+            </TabsTrigger>
+            <TabsTrigger value="users" className="px-3 py-2 text-sm">
+              <Users className="w-4 h-4 mr-1.5" />
+              Users
             </TabsTrigger>
             <TabsTrigger value="subscriptions" className="px-3 py-2 text-sm">
               <Settings className="w-4 h-4 mr-1.5" />
@@ -162,16 +162,16 @@ const AdminDashboard = ({ onLogout }) => {
             <BoardsTab onUpdate={fetchStats} />
           </TabsContent>
 
-          <TabsContent value="users">
-            <UsersTab />
-          </TabsContent>
-
           <TabsContent value="subjects">
             <SubjectsTab onUpdate={fetchStats} />
           </TabsContent>
 
           <TabsContent value="materials">
             <MaterialsTab />
+          </TabsContent>
+
+          <TabsContent value="users">
+            <UsersTab />
           </TabsContent>
 
           <TabsContent value="subscriptions">
