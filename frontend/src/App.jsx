@@ -8,6 +8,10 @@ import MyPlans from './pages/MyPlans';
 import MaterialViewer from './pages/MaterialViewer';
 import Settings from './pages/Settings';
 import AdminPage from './pages/admin/AdminPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import RefundPolicy from './pages/RefundPolicy';
+import CancellationPolicy from './pages/CancellationPolicy';
 import { Toaster } from 'sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
