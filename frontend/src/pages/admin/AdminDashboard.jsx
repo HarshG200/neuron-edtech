@@ -131,29 +131,29 @@ const AdminDashboard = ({ onLogout }) => {
 
         {/* Management Tabs */}
         <Tabs defaultValue="boards" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 mb-6">
-            <TabsTrigger value="boards">
-              <GraduationCap className="w-4 h-4 mr-2" />
+          <TabsList className="flex flex-wrap justify-start gap-1 h-auto p-1 mb-6 bg-gray-100">
+            <TabsTrigger value="boards" className="px-3 py-2 text-sm">
+              <GraduationCap className="w-4 h-4 mr-1.5" />
               Boards
             </TabsTrigger>
-            <TabsTrigger value="users">
-              <Users className="w-4 h-4 mr-2" />
+            <TabsTrigger value="users" className="px-3 py-2 text-sm">
+              <Users className="w-4 h-4 mr-1.5" />
               Users
             </TabsTrigger>
-            <TabsTrigger value="subjects">
-              <BookOpen className="w-4 h-4 mr-2" />
+            <TabsTrigger value="subjects" className="px-3 py-2 text-sm">
+              <BookOpen className="w-4 h-4 mr-1.5" />
               Subjects
             </TabsTrigger>
-            <TabsTrigger value="materials">
-              <FileText className="w-4 h-4 mr-2" />
+            <TabsTrigger value="materials" className="px-3 py-2 text-sm">
+              <FileText className="w-4 h-4 mr-1.5" />
               Materials
             </TabsTrigger>
-            <TabsTrigger value="subscriptions">
-              <Settings className="w-4 h-4 mr-2" />
+            <TabsTrigger value="subscriptions" className="px-3 py-2 text-sm">
+              <Settings className="w-4 h-4 mr-1.5" />
               Subscriptions
             </TabsTrigger>
-            <TabsTrigger value="payments">
-              <CreditCard className="w-4 h-4 mr-2" />
+            <TabsTrigger value="payments" className="px-3 py-2 text-sm">
+              <CreditCard className="w-4 h-4 mr-1.5" />
               Payments
             </TabsTrigger>
           </TabsList>
