@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import { Badge } from '../../../components/ui/badge';
 import { Input } from '../../../components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, FileText, User, Calendar, CheckCircle, XCircle } from 'lucide-react';
 
 const SubscriptionsTab = () => {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -41,59 +41,102 @@ const SubscriptionsTab = () => {
   };
 
   return (
-    <Card className="shadow-xl border-0">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-2xl">Subscription Management</CardTitle>
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+    <Card className="shadow-lg border border-gray-200">
+      <CardHeader className="border-b bg-gray-50/50">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <CardTitle className="text-xl font-semibold text-gray-800">Subscription Management</CardTitle>
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             <Input
-              placeholder="Search subscriptions..."
+              placeholder="Search by user or subject..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-9 h-9"
             />
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         {loading ? (
-          <div className="text-center py-8">Loading subscriptions...</div>
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-600"></div>
+          </div>
+        ) : filteredSubscriptions.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">
+            <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <p>No subscriptions found</p>
+          </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User Email</TableHead>
-                <TableHead>Subject</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Start Date</TableHead>
-                <TableHead>End Date</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredSubscriptions.map((sub, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">{sub.user_email}</TableCell>
-                  <TableCell>{sub.subject_name}</TableCell>
-                  <TableCell>₹{sub.price}</TableCell>
-                  <TableCell>
-                    {new Date(sub.start_date).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(sub.end_date).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    {isActive(sub.end_date) ? (
-                      <Badge className="bg-green-500">Active</Badge>
-                    ) : (
-                      <Badge variant="secondary">Expired</Badge>
-                    )}
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50 hover:bg-gray-50">
+                  <TableHead className="font-semibold text-gray-700 py-3">
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      User Email
+                    </div>
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">Subject</TableHead>
+                  <TableHead className="font-semibold text-gray-700 text-right">Price</TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      Start Date
+                    </div>
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      End Date
+                    </div>
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700 text-center">Status</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredSubscriptions.map((sub, index) => (
+                  <TableRow key={index} className="hover:bg-gray-50/50">
+                    <TableCell className="font-medium text-gray-900 py-4">{sub.user_email}</TableCell>
+                    <TableCell className="text-gray-600">{sub.subject_name}</TableCell>
+                    <TableCell className="text-gray-900 font-medium text-right">₹{sub.price}</TableCell>
+                    <TableCell className="text-gray-500 text-sm">
+                      {new Date(sub.start_date).toLocaleDateString('en-IN', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
+                    </TableCell>
+                    <TableCell className="text-gray-500 text-sm">
+                      {new Date(sub.end_date).toLocaleDateString('en-IN', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {isActive(sub.end_date) ? (
+                        <Badge className="bg-green-100 text-green-700 hover:bg-green-100 gap-1">
+                          <CheckCircle className="w-3 h-3" />
+                          Active
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="gap-1">
+                          <XCircle className="w-3 h-3" />
+                          Expired
+                        </Badge>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+        {filteredSubscriptions.length > 0 && (
+          <div className="px-4 py-3 border-t bg-gray-50/50 text-sm text-gray-500">
+            Showing {filteredSubscriptions.length} of {subscriptions.length} subscriptions
+          </div>
         )}
       </CardContent>
     </Card>

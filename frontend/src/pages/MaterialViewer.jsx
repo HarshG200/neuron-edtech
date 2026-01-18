@@ -139,7 +139,7 @@ const MaterialViewer = () => {
               <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
                 Study <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Materials</span>
               </h1>
-              <p className="text-gray-600">Access your PDFs and video lectures</p>
+              <p className="text-gray-600">Access your PDFs{videoMaterials.length > 0 ? ' and video lectures' : ''}</p>
             </div>
 
             <Tabs defaultValue="pdf" className="w-full">
@@ -148,41 +148,50 @@ const MaterialViewer = () => {
                   <FileText className="w-4 h-4 mr-2" />
                   PDFs ({pdfMaterials.length})
                 </TabsTrigger>
-                <TabsTrigger value="video" data-testid="video-tab">
-                  <Video className="w-4 h-4 mr-2" />
-                  Videos ({videoMaterials.length})
-                </TabsTrigger>
+                {videoMaterials.length > 0 && (
+                  <TabsTrigger value="video" data-testid="video-tab">
+                    <Video className="w-4 h-4 mr-2" />
+                    Videos ({videoMaterials.length})
+                  </TabsTrigger>
+                )}
               </TabsList>
 
               <TabsContent value="pdf">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {pdfMaterials.map((material) => (
-                    <Card
-                      key={material.id}
-                      data-testid={`pdf-card-${material.id}`}
-                      className="card-hover shadow-lg border-0 group"
-                    >
-                      <div className="h-2 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
-                      <CardHeader>
-                        <div className="bg-gradient-to-br from-blue-100 to-cyan-100 w-12 h-12 rounded-xl flex items-center justify-center mb-3">
-                          <FileText className="w-6 h-6 text-blue-600" />
-                        </div>
-                        <CardTitle className="text-lg">{material.title}</CardTitle>
-                        <CardDescription>{material.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <Button
-                          data-testid={`view-pdf-button-${material.id}`}
-                          onClick={() => setSelectedMaterial(material)}
-                          className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
-                        >
-                          <Eye className="w-4 h-4 mr-2" />
-                          View PDF
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                {pdfMaterials.length === 0 ? (
+                  <div className="text-center py-12 text-gray-500">
+                    <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                    <p>No PDFs available for this subject</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {pdfMaterials.map((material) => (
+                      <Card
+                        key={material.id}
+                        data-testid={`pdf-card-${material.id}`}
+                        className="card-hover shadow-lg border-0 group"
+                      >
+                        <div className="h-2 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
+                        <CardHeader>
+                          <div className="bg-gradient-to-br from-blue-100 to-cyan-100 w-12 h-12 rounded-xl flex items-center justify-center mb-3">
+                            <FileText className="w-6 h-6 text-blue-600" />
+                          </div>
+                          <CardTitle className="text-lg">{material.title}</CardTitle>
+                          <CardDescription>{material.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <Button
+                            data-testid={`view-pdf-button-${material.id}`}
+                            onClick={() => setSelectedMaterial(material)}
+                            className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            View PDF
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </TabsContent>
 
               <TabsContent value="video">

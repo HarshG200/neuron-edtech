@@ -48,11 +48,20 @@ A production-grade EdTech platform for Class 10 students to access study materia
 - Tab Order: Boards → Users → Subjects → Materials → Subscriptions → Payments
 
 #### Branding & UI
-- Neuron branding with new logo (Book with neurons - "Learn differently. By a doctor")
-- Logo visible on all pages (Auth, Dashboard, Admin)
+- Neuron by ELV branding with enhanced logo
+- Logo visible on all pages (Auth, Dashboard, Admin, Policy pages)
 - Modern slate/indigo palette
 - Compact footer with contact info, privacy notice, and policy links
-- Consistent max-w-7xl containers across all pages
+- Consistent max-w-[1400px] containers across all pages
+- Eye icon password visibility toggle on login forms
+- Responsive admin tabs (flex-wrap instead of grid)
+- Improved table structure in admin panel
+
+#### Policy Pages
+- Privacy Policy (`/privacy`) - Data collection, usage, security, and user rights
+- Terms of Service (`/terms`) - User accounts, subscription access, prohibited activities
+- Refund Policy (`/refund`) - Eligibility criteria, refund process
+- Cancellation Policy (`/cancellation`) - Account management and deletion
 
 ### 🟡 Pending Features (P1-P2)
 
