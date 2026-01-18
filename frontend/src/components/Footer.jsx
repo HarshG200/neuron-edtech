@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Shield } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -31,18 +32,18 @@ const Footer = () => {
 
         {/* Links Row */}
         <div className="flex flex-wrap justify-center gap-4 text-xs mb-3">
-          <a href="#privacy" className="text-blue-400 hover:text-blue-300 transition-colors">Privacy Policy</a>
+          <Link to="/privacy" className="text-blue-400 hover:text-blue-300 transition-colors">Privacy Policy</Link>
           <span className="text-gray-600">•</span>
-          <a href="#terms" className="text-blue-400 hover:text-blue-300 transition-colors">Terms of Service</a>
+          <Link to="/terms" className="text-blue-400 hover:text-blue-300 transition-colors">Terms of Service</Link>
           <span className="text-gray-600">•</span>
-          <a href="#refund" className="text-blue-400 hover:text-blue-300 transition-colors">Refund Policy</a>
+          <Link to="/refund" className="text-blue-400 hover:text-blue-300 transition-colors">Refund Policy</Link>
           <span className="text-gray-600">•</span>
-          <a href="#cancellation" className="text-blue-400 hover:text-blue-300 transition-colors">Cancellation</a>
+          <Link to="/cancellation" className="text-blue-400 hover:text-blue-300 transition-colors">Cancellation</Link>
         </div>
 
         {/* Copyright */}
         <div className="text-center text-xs text-gray-500">
-          © {currentYear} Neuron. Made with ❤️ for students across India
+          © {currentYear} Neuron by ELV. Made with ❤️ for students across India
         </div>
       </div>
     </footer>
