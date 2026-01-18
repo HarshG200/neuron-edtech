@@ -868,6 +868,70 @@ async def delete_material(material_id: str, admin: dict = Depends(get_admin_user
     
     return {'message': 'Material deleted successfully'}
 
+class SubjectUpdate(BaseModel):
+    board: str
+    class_name: str
+    subject_name: str
+    price: str
+    duration_months: int
+
+@api_router.put("/admin/subjects/{subject_id}")
+async def update_subject(
+    subject_id: str,
+    subject_data: SubjectUpdate,
+    admin: dict = Depends(get_admin_user)
+):
+    """Update existing subject"""
+    update_data = {
+        'board': subject_data.board,
+        'class_name': subject_data.class_name,
+        'subject_name': subject_data.subject_name,
+        'price': int(subject_data.price),
+        'duration_months': subject_data.duration_months
+    }
+    
+    result = await db.subjects.update_one(
+        {'id': subject_id},
+        {'$set': update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    
+    return {'message': 'Subject updated successfully'}
+
+class MaterialUpdate(BaseModel):
+    subject_id: str
+    title: str
+    type: str
+    link: str
+    description: str = ""
+
+@api_router.put("/admin/materials/{material_id}")
+async def update_material(
+    material_id: str,
+    material_data: MaterialUpdate,
+    admin: dict = Depends(get_admin_user)
+):
+    """Update existing material"""
+    update_data = {
+        'subject_id': material_data.subject_id,
+        'title': material_data.title,
+        'type': material_data.type,
+        'link': material_data.link,
+        'description': material_data.description
+    }
+    
+    result = await db.materials.update_one(
+        {'id': material_id},
+        {'$set': update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Material not found")
+    
+    return {'message': 'Material updated successfully'}
+
 # Include router
 app.include_router(api_router)
 
