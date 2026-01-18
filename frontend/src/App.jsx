@@ -73,6 +73,7 @@ function App() {
     <AuthContext.Provider value={{ user, setUser, logout }}>
       <div className="App">
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/admin" element={<AdminPage />} />
             <Route
