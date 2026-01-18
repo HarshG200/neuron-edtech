@@ -9,7 +9,7 @@ const Logo = ({ className = "h-10", variant = "default" }) => {
   return (
     <div className={`flex items-center ${containerClass}`}>
       <img 
-        src="/neuron-logo.png" 
+        src="/neuron-logo.jpg" 
         alt="Neuron by ELV" 
         className={`${className} object-contain`}
       />
