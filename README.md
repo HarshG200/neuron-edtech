@@ -1,145 +1,193 @@
-# EduStream - Study Materials Platform
+# Neuron by ELV - Learn Differently
 
-A production-grade EdTech platform for Class 10 students to access premium study materials with secure content delivery and subscription management.
+A premium study materials platform for Class 10 students, offering comprehensive PDFs, video lectures, and subscription-based access to educational content.
 
-## 🎯 Features
+![Neuron by ELV](frontend/public/neuron-logo.png)
 
-### Core Features
-- **User Authentication**: JWT-based secure authentication with registration and login
-- **Subject Catalog**: Browse ICSE and CBSE Class 10 subjects (Biology, Chemistry, Physics)
-- **Subscription Management**: 6-month subscription plans with automatic expiry tracking
-- **Payment Integration**: Razorpay payment gateway with webhook support
-- **Material Viewer**: Secure PDF and video player with anti-piracy measures
-- **My Plans Dashboard**: View active subscriptions with detailed plan information
+## 🎯 Overview
 
-### Security Features (Anti-Piracy)
-- **Dynamic Watermark**: Moving watermark overlay showing user email on videos/PDFs
-- **Content Protection**: Right-click disabled, save shortcuts blocked
-- **Row-Level Security**: Materials only accessible with valid subscription
-- **JWT Authentication**: Secure API access with token-based auth
+Neuron by ELV is a full-stack EdTech application that provides students with access to quality study materials across multiple education boards (ICSE, CBSE, State Boards). The platform features a secure subscription system powered by Razorpay, an admin panel for content management, and robust content protection measures.
 
-## 🏗️ Tech Stack
+## ✨ Features
 
-### Backend
-- **FastAPI** - High-performance Python web framework
-- **MongoDB** - NoSQL database for flexible data storage
-- **Razorpay SDK** - Payment processing
-- **PyJWT** - JWT token management
-- **Bcrypt** - Password hashing
+### For Students
+- **Subject Dashboard** - Browse available subjects by board with pricing
+- **Subscription System** - Purchase access to subjects via Razorpay
+- **Material Viewer** - Access PDFs and video lectures with watermark protection
+- **My Plans** - View active subscriptions and expiry dates
+- **Profile Management** - Update personal information and password
 
-### Frontend
-- **React 19** - Modern UI library
-- **Tailwind CSS** - Utility-first CSS framework
-- **Shadcn/UI** - Beautiful component library
-- **React Router** - Client-side routing
-- **Axios** - HTTP client
-- **Sonner** - Toast notifications
+### For Administrators
+- **Dashboard Analytics** - View total users, subjects, subscriptions, and revenue
+- **Board Management** - Add, edit, and delete education boards
+- **Subject Management** - CRUD operations with visibility toggle
+- **Material Management** - Add PDFs (Google Drive) and Videos (Bunny.net)
+- **User Management** - View registered users
+- **Subscription Tracking** - Monitor active and expired subscriptions
+- **Payment History** - Track all transactions
+
+### Security Features
+- JWT-based authentication for users and admins
+- Content protection (disabled right-click, keyboard shortcuts)
+- Dynamic email watermark on materials
+- Print protection via CSS
+- Secure payment verification
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 19, Vite, Tailwind CSS, Shadcn/UI |
+| Backend | FastAPI, Python 3.11+ |
+| Database | MongoDB |
+| Payments | Razorpay |
+| Icons | Lucide React |
 
 ## 📁 Project Structure
 
 ```
-/app
+neuron-by-elv/
 ├── backend/
-│   ├── server.py           # FastAPI application
-│   ├── .env               # Backend environment variables
-│   └── requirements.txt   # Python dependencies
+│   ├── server.py          # FastAPI application
+│   ├── requirements.txt   # Python dependencies
+│   └── .env              # Backend environment variables
 ├── frontend/
 │   ├── src/
-│   │   ├── pages/
-│   │   │   ├── AuthPage.js        # Login/Register
-│   │   │   ├── Dashboard.js       # Subject catalog
-│   │   │   ├── MyPlans.js         # Subscriptions list
-│   │   │   └── MaterialViewer.js  # PDF/Video viewer
-│   │   ├── App.js
-│   │   ├── App.css
-│   │   └── index.css
-│   ├── .env               # Frontend environment variables
-│   └── package.json       # Node dependencies
-└── README.md
+│   │   ├── components/   # Reusable UI components
+│   │   ├── pages/        # Page components
+│   │   │   └── admin/    # Admin panel pages
+│   │   ├── lib/          # Utility functions
+│   │   └── hooks/        # Custom React hooks
+│   ├── public/           # Static assets
+│   ├── index.html        # Entry HTML
+│   ├── vite.config.js    # Vite configuration
+│   └── .env              # Frontend environment variables
+├── memory/
+│   └── PRD.md            # Product Requirements Document
+└── README.md             # This file
 ```
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.11+
 - Node.js 18+
-- MongoDB running on localhost:27017
+- Python 3.11+
+- MongoDB
+- Razorpay Account
 
-### Environment Variables
+### Backend Setup
 
-**Backend (.env)**
+```bash
+cd backend
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your MongoDB URI and other settings
+
+# Run server
+uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+
+# Install dependencies
+yarn install
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your backend URL and Razorpay key
+
+# Run development server
+yarn dev
+
+# Build for production
+yarn build
+```
+
+## 🔐 Environment Variables
+
+### Backend (.env)
 ```
 MONGO_URL=mongodb://localhost:27017
-DB_NAME=test_database
-CORS_ORIGINS=*
-JWT_SECRET=your-secret-key-change-in-production
-RAZORPAY_KEY_ID=rzp_test_YourKeyId
-RAZORPAY_KEY_SECRET=YourSecretKey
-RAZORPAY_WEBHOOK_SECRET=YourWebhookSecret
+DB_NAME=neuron_db
+JWT_SECRET=your-secret-key
+RAZORPAY_KEY_ID=your-razorpay-key
+RAZORPAY_KEY_SECRET=your-razorpay-secret
 ```
 
-**Frontend (.env)**
+### Frontend (.env)
 ```
-REACT_APP_BACKEND_URL=https://your-backend-url.com
-REACT_APP_RAZORPAY_KEY_ID=rzp_test_YourKeyId
+REACT_APP_BACKEND_URL=http://localhost:8001
+REACT_APP_RAZORPAY_KEY_ID=your-razorpay-key
 ```
 
-### Demo User
-- Email: `demo@edustream.com`
-- Password: `demo123`
-- Active subscriptions: ICSE Biology, ICSE Chemistry
+## 📱 Pages & Routes
 
-## 🔐 API Endpoints
+### Client Routes
+| Route | Description |
+|-------|-------------|
+| `/` | Redirect to dashboard or auth |
+| `/auth` | Login/Register page |
+| `/dashboard` | Subject listing |
+| `/my-plans` | User's active subscriptions |
+| `/settings` | Profile management |
+| `/materials/:subjectId` | Material viewer |
+| `/privacy` | Privacy Policy |
+| `/terms` | Terms of Service |
+| `/refund` | Refund Policy |
+| `/cancellation` | Cancellation Policy |
+
+### Admin Routes
+| Route | Description |
+|-------|-------------|
+| `/admin` | Admin login & dashboard |
+
+## 🔌 API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user (requires auth)
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
 
-### Subjects
-- `GET /api/subjects` - List all subjects
-- `POST /api/subjects/seed` - Seed initial subjects
-
-### Subscriptions
-- `GET /api/subscriptions/my` - Get user's subscriptions (requires auth)
-- `GET /api/subscriptions/check/{subject_id}` - Check subscription status (requires auth)
-
-### Materials
-- `GET /api/materials/{subject_id}` - Get materials for subject (requires auth + subscription)
-- `POST /api/materials/seed` - Seed sample materials
+### Subjects & Materials
+- `GET /api/subjects` - List visible subjects
+- `GET /api/materials/:subjectId` - Get materials (requires subscription)
 
 ### Payments
-- `POST /api/payments/create-order` - Create Razorpay order (requires auth)
-- `POST /api/payments/verify` - Verify payment signature (requires auth)
-- `POST /api/payments/webhook` - Razorpay webhook endpoint
+- `POST /api/payments/order` - Create Razorpay order
+- `POST /api/payments/verify` - Verify payment & create subscription
 
-## 💳 Payment Flow
+### Admin
+- `POST /api/admin/login` - Admin authentication
+- `GET /api/admin/stats` - Dashboard statistics
+- CRUD endpoints for boards, subjects, materials
+- GET endpoints for users, subscriptions, payments
 
-1. User clicks "Buy Plan" on a subject
-2. Frontend creates order via `/api/payments/create-order`
-3. Razorpay checkout modal opens
-4. User completes payment
-5. Frontend verifies payment via `/api/payments/verify`
-6. Backend creates subscription with 6-month expiry
-7. User can now access materials
+## 🧪 Test Credentials
 
-## 🎯 Next Action Items
+### Admin
+- **URL:** `/admin`
+- **Email:** `admin@neuronlearn.com`
+- **Password:** `admin123`
 
-### Immediate Enhancements
-1. **Payment Testing**: Add Razorpay production keys for live payments
-2. **Email Notifications**: Send confirmation emails after subscription purchase
-3. **Material Content**: Replace demo links with actual Google Drive and Bunny.net links
+### User
+Create a new account via the registration page.
 
-### Growth Features
-1. **Referral Program**: Reward users for bringing friends (₹50 credit per referral)
-2. **Bundle Deals**: Offer discounts for multiple subject purchases (Buy 2, get 10% off)
-3. **Progress Tracking**: Track material completion and generate reports
+## 📄 License
 
-### Revenue Optimization
-1. **Limited-Time Offers**: Flash sales on specific subjects
-2. **Premium Tier**: Add advanced features (1-on-1 doubt solving, live classes)
-3. **Content Expansion**: Add more classes (11, 12) and competitive exam prep
+© 2026 Neuron by ELV. All rights reserved.
 
----
+## 📞 Support
 
-**Built with ❤️ using Emergent**
+- **Email:** support@neuronlearn.com
+- **Phone:** +91 98765 43210
