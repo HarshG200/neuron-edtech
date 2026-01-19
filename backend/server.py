@@ -932,6 +932,128 @@ async def update_material(
     
     return {'message': 'Material updated successfully'}
 
+# ============= Updates/Announcements =============
+
+class UpdateCreate(BaseModel):
+    title: str
+    description: str
+    type: str = "announcement"  # announcement, free_pdf, free_video
+    link: str = ""
+    is_pinned: bool = False
+
+class UpdateEdit(BaseModel):
+    title: str
+    description: str
+    type: str
+    link: str = ""
+    is_pinned: bool = False
+
+@api_router.get("/updates")
+async def get_updates():
+    """Get all active updates for users (public endpoint)"""
+    updates = await db.updates.find(
+        {'is_active': True},
+        {'_id': 0}
+    ).sort('created_at', -1).limit(20).to_list(20)
+    return updates
+
+@api_router.get("/admin/updates")
+async def get_all_updates(admin: dict = Depends(get_admin_user)):
+    """Get all updates for admin"""
+    updates = await db.updates.find({}, {'_id': 0}).sort('created_at', -1).to_list(100)
+    return updates
+
+@api_router.post("/admin/updates")
+async def create_update(
+    update_data: UpdateCreate,
+    admin: dict = Depends(get_admin_user)
+):
+    """Create new update/announcement"""
+    import uuid
+    update_id = f"upd-{str(uuid.uuid4())[:8]}"
+    
+    update_doc = {
+        'id': update_id,
+        'title': update_data.title,
+        'description': update_data.description,
+        'type': update_data.type,
+        'link': update_data.link,
+        'is_pinned': update_data.is_pinned,
+        'is_active': True,
+        'created_at': datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.updates.insert_one(update_doc)
+    
+    return {
+        'message': 'Update created successfully',
+        'update': {
+            'id': update_doc['id'],
+            'title': update_doc['title'],
+            'description': update_doc['description'],
+            'type': update_doc['type'],
+            'link': update_doc['link'],
+            'is_pinned': update_doc['is_pinned'],
+            'is_active': update_doc['is_active'],
+            'created_at': update_doc['created_at']
+        }
+    }
+
+@api_router.put("/admin/updates/{update_id}")
+async def edit_update(
+    update_id: str,
+    update_data: UpdateEdit,
+    admin: dict = Depends(get_admin_user)
+):
+    """Edit existing update"""
+    update_fields = {
+        'title': update_data.title,
+        'description': update_data.description,
+        'type': update_data.type,
+        'link': update_data.link,
+        'is_pinned': update_data.is_pinned
+    }
+    
+    result = await db.updates.update_one(
+        {'id': update_id},
+        {'$set': update_fields}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Update not found")
+    
+    return {'message': 'Update edited successfully'}
+
+@api_router.put("/admin/updates/{update_id}/toggle")
+async def toggle_update_status(
+    update_id: str,
+    admin: dict = Depends(get_admin_user)
+):
+    """Toggle update active status"""
+    update = await db.updates.find_one({'id': update_id})
+    if not update:
+        raise HTTPException(status_code=404, detail="Update not found")
+    
+    new_status = not update.get('is_active', True)
+    await db.updates.update_one(
+        {'id': update_id},
+        {'$set': {'is_active': new_status}}
+    )
+    
+    return {'message': f'Update {"activated" if new_status else "deactivated"} successfully'}
+
+@api_router.delete("/admin/updates/{update_id}")
+async def delete_update(
+    update_id: str,
+    admin: dict = Depends(get_admin_user)
+):
+    """Delete update"""
+    result = await db.updates.delete_one({'id': update_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Update not found")
+    
+    return {'message': 'Update deleted successfully'}
+
 # Include router
 app.include_router(api_router)
 

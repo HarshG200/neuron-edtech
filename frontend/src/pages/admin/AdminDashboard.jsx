@@ -11,6 +11,7 @@ import {
   LogOut,
   LayoutDashboard,
   GraduationCap,
+  Bell,
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
@@ -22,6 +23,7 @@ import SubjectsTab from './tabs/SubjectsTab';
 import MaterialsTab from './tabs/MaterialsTab';
 import SubscriptionsTab from './tabs/SubscriptionsTab';
 import PaymentsTab from './tabs/PaymentsTab';
+import UpdatesTab from './tabs/UpdatesTab';
 
 const AdminDashboard = ({ onLogout }) => {
   const [stats, setStats] = useState({ users: 0, subjects: 0, subscriptions: 0, revenue: 0 });
@@ -144,6 +146,10 @@ const AdminDashboard = ({ onLogout }) => {
               <FileText className="w-4 h-4 mr-1.5" />
               Materials
             </TabsTrigger>
+            <TabsTrigger value="updates" className="px-3 py-2 text-sm">
+              <Bell className="w-4 h-4 mr-1.5" />
+              Updates
+            </TabsTrigger>
             <TabsTrigger value="users" className="px-3 py-2 text-sm">
               <Users className="w-4 h-4 mr-1.5" />
               Users
@@ -168,6 +174,10 @@ const AdminDashboard = ({ onLogout }) => {
 
           <TabsContent value="materials">
             <MaterialsTab />
+          </TabsContent>
+
+          <TabsContent value="updates">
+            <UpdatesTab />
           </TabsContent>
 
           <TabsContent value="users">

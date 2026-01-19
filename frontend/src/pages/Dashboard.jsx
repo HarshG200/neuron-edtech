@@ -18,6 +18,7 @@ import { Badge } from '../components/ui/badge';
 import AccountMenu from '../components/AccountMenu';
 import Footer from '../components/Footer';
 import Logo from '../components/Logo';
+import UpdatesDrawer from '../components/UpdatesDrawer';
 
 const Dashboard = () => {
   const { user, logout } = React.useContext(AuthContext);
@@ -121,6 +122,7 @@ const Dashboard = () => {
               <Logo className="h-14" />
             </div>
             <div className="flex items-center space-x-4">
+              <UpdatesDrawer />
               <Button
                 data-testid="my-plans-button"
                 variant="outline"

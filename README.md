@@ -16,12 +16,14 @@ Neuron by ELV is a full-stack EdTech application that provides students with acc
 - **Material Viewer** - Access PDFs and video lectures with watermark protection
 - **My Plans** - View active subscriptions and expiry dates
 - **Profile Management** - Update personal information and password
+- **Updates Drawer** - View announcements and free resources from admin
 
 ### For Administrators
 - **Dashboard Analytics** - View total users, subjects, subscriptions, and revenue
 - **Board Management** - Add, edit, and delete education boards
 - **Subject Management** - CRUD operations with visibility toggle
 - **Material Management** - Add PDFs (Google Drive) and Videos (Bunny.net)
+- **Updates Management** - Create announcements, share free PDFs/videos with students
 - **User Management** - View registered users
 - **Subscription Tracking** - Monitor active and expired subscriptions
 - **Payment History** - Track all transactions
