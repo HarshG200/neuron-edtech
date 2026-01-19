@@ -11,6 +11,7 @@ import {
   LogOut,
   LayoutDashboard,
   GraduationCap,
+  Bell,
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
@@ -22,6 +23,7 @@ import SubjectsTab from './tabs/SubjectsTab';
 import MaterialsTab from './tabs/MaterialsTab';
 import SubscriptionsTab from './tabs/SubscriptionsTab';
 import PaymentsTab from './tabs/PaymentsTab';
+import UpdatesTab from './tabs/UpdatesTab';
 
 const AdminDashboard = ({ onLogout }) => {
   const [stats, setStats] = useState({ users: 0, subjects: 0, subscriptions: 0, revenue: 0 });
