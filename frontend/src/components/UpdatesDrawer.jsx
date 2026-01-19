@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API } from '../App';
-import { Bell, X, FileText, Video, Megaphone, ExternalLink, Pin, ChevronRight } from 'lucide-react';
+import { Bell, X, FileText, Video, Megaphone, ExternalLink, Pin } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { ScrollArea } from './ui/scroll-area';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './ui/sheet';
 
 const UpdatesDrawer = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [updates, setUpdates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasNew, setHasNew] = useState(false);
@@ -47,11 +53,11 @@ const UpdatesDrawer = () => {
   const getTypeBadge = (type) => {
     switch (type) {
       case 'free_pdf':
-        return <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100">Free PDF</Badge>;
+        return <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Free PDF</Badge>;
       case 'free_video':
-        return <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100">Free Video</Badge>;
+        return <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 text-xs">Free Video</Badge>;
       default:
-        return <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100">Announcement</Badge>;
+        return <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100 text-xs">Announcement</Badge>;
     }
   };
 
@@ -76,87 +82,73 @@ const UpdatesDrawer = () => {
   });
 
   return (
-    <>
-      {/* Toggle Button */}
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => setIsOpen(true)}
-        className="relative"
-        data-testid="updates-toggle"
-      >
-        <Bell className="w-5 h-5" />
-        {hasNew && (
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-        )}
-      </Button>
-
-      {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-40 transition-opacity"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-          <div className="flex items-center gap-2">
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative"
+          data-testid="updates-toggle"
+        >
+          <Bell className="w-5 h-5" />
+          {hasNew && (
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+          )}
+        </Button>
+      </SheetTrigger>
+      
+      <SheetContent side="right" className="w-full sm:w-[400px] p-0">
+        <SheetHeader className="p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+          <SheetTitle className="flex items-center gap-2 text-white">
             <Bell className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">Updates & Free Resources</h2>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsOpen(false)}
-            className="text-white hover:bg-white/20"
-          >
-            <X className="w-5 h-5" />
-          </Button>
-        </div>
-
-        {/* Content */}
-        <ScrollArea className="h-[calc(100vh-64px)]">
+            Updates & Free Resources
+          </SheetTitle>
+        </SheetHeader>
+        
+        <ScrollArea className="h-[calc(100vh-80px)]">
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-600"></div>
             </div>
           ) : updates.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-              <Megaphone className="w-12 h-12 mb-3 text-gray-300" />
-              <p>No updates yet</p>
-              <p className="text-sm">Check back later for announcements</p>
+            <div className="flex flex-col items-center justify-center py-16 px-4 text-gray-500">
+              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                <Megaphone className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="font-medium text-gray-700">No updates yet</p>
+              <p className="text-sm text-center mt-1">Check back later for announcements and free resources</p>
             </div>
           ) : (
             <div className="p-4 space-y-3">
               {sortedUpdates.map((update) => (
                 <div
                   key={update.id}
-                  className={`p-4 rounded-lg border transition-all hover:shadow-md ${
-                    update.is_pinned ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50 border-gray-200'
+                  className={`p-4 rounded-xl border-2 transition-all hover:shadow-md ${
+                    update.is_pinned 
+                      ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200' 
+                      : 'bg-white border-gray-100 hover:border-gray-200'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2">
-                      {getTypeIcon(update.type)}
-                      <span className="font-medium text-gray-900">{update.title}</span>
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                        update.type === 'free_pdf' ? 'bg-blue-100' :
+                        update.type === 'free_video' ? 'bg-purple-100' : 'bg-orange-100'
+                      }`}>
+                        {getTypeIcon(update.type)}
+                      </div>
+                      <span className="font-semibold text-gray-900 truncate">{update.title}</span>
                     </div>
                     {update.is_pinned && (
-                      <Pin className="w-4 h-4 text-yellow-600 flex-shrink-0" />
+                      <Pin className="w-4 h-4 text-yellow-600 flex-shrink-0 fill-yellow-600" />
                     )}
                   </div>
                   
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                  <p className="text-sm text-gray-600 mb-3 line-clamp-2 ml-10">
                     {update.description}
                   </p>
                   
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between ml-10">
                     <div className="flex items-center gap-2">
                       {getTypeBadge(update.type)}
                       <span className="text-xs text-gray-400">{formatDate(update.created_at)}</span>
@@ -167,7 +159,7 @@ const UpdatesDrawer = () => {
                         href={update.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                        className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
                       >
                         View <ExternalLink className="w-3 h-3" />
                       </a>
@@ -178,8 +170,8 @@ const UpdatesDrawer = () => {
             </div>
           )}
         </ScrollArea>
-      </div>
-    </>
+      </SheetContent>
+    </Sheet>
   );
 };
 
