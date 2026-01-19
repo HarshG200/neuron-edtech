@@ -146,6 +146,10 @@ const AdminDashboard = ({ onLogout }) => {
               <FileText className="w-4 h-4 mr-1.5" />
               Materials
             </TabsTrigger>
+            <TabsTrigger value="updates" className="px-3 py-2 text-sm">
+              <Bell className="w-4 h-4 mr-1.5" />
+              Updates
+            </TabsTrigger>
             <TabsTrigger value="users" className="px-3 py-2 text-sm">
               <Users className="w-4 h-4 mr-1.5" />
               Users
@@ -170,6 +174,10 @@ const AdminDashboard = ({ onLogout }) => {
 
           <TabsContent value="materials">
             <MaterialsTab />
+          </TabsContent>
+
+          <TabsContent value="updates">
+            <UpdatesTab />
           </TabsContent>
 
           <TabsContent value="users">
