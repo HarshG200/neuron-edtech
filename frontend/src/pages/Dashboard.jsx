@@ -122,6 +122,7 @@ const Dashboard = () => {
               <Logo className="h-14" />
             </div>
             <div className="flex items-center space-x-4">
+              <UpdatesDrawer />
               <Button
                 data-testid="my-plans-button"
                 variant="outline"
