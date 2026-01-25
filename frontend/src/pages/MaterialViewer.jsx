@@ -281,15 +281,16 @@ const MaterialViewer = () => {
                 <Watermark email={user.email} />
                 {selectedMaterial.type === 'pdf' ? (
                   <iframe
-                    src={selectedMaterial.link}
+                    src={getEmbedUrl(selectedMaterial.link, 'pdf')}
                     className="w-full h-[80vh]"
                     title={selectedMaterial.title}
                     frameBorder="0"
+                    allow="autoplay"
                   />
                 ) : (
                   <div className="relative">
                     <iframe
-                      src={selectedMaterial.link}
+                      src={getEmbedUrl(selectedMaterial.link, 'video')}
                       className="w-full h-[80vh]"
                       title={selectedMaterial.title}
                       frameBorder="0"
