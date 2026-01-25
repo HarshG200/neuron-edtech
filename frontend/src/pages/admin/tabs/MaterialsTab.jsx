@@ -294,15 +294,24 @@ const MaterialsTab = () => {
                 value={formData.link}
                 onChange={(e) => setFormData({...formData, link: e.target.value})}
                 placeholder={formData.type === 'pdf' 
-                  ? 'https://drive.google.com/file/d/FILE_ID/preview' 
+                  ? 'https://drive.google.com/file/d/FILE_ID/view' 
                   : 'https://iframe.mediadelivery.net/embed/LIBRARY_ID/VIDEO_ID'}
                 required
               />
-              <p className="text-xs text-gray-500">
-                {formData.type === 'pdf' 
-                  ? 'Paste Google Drive preview link (File must be publicly accessible)' 
-                  : 'Paste Bunny.net iframe embed link'}
-              </p>
+              {formData.type === 'pdf' ? (
+                <div className="text-xs space-y-1">
+                  <p className="text-gray-500">
+                    📋 Paste any Google Drive share link - it will be auto-converted for embedding
+                  </p>
+                  <p className="text-blue-600">
+                    ⚠️ Make sure the file is shared as "Anyone with the link can view"
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xs text-gray-500">
+                  Paste Bunny.net iframe embed link
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Description (optional)</label>

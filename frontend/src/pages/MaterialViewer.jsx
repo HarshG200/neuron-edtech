@@ -17,6 +17,40 @@ const Watermark = ({ email }) => {
   );
 };
 
+// Helper function to convert Google Drive links to embeddable format
+const getEmbedUrl = (link, type) => {
+  if (!link) return '';
+  
+  // Handle Google Drive links
+  if (link.includes('drive.google.com')) {
+    // Extract file ID from various Google Drive URL formats
+    let fileId = null;
+    
+    // Format: https://drive.google.com/file/d/FILE_ID/view
+    // Format: https://drive.google.com/file/d/FILE_ID/preview
+    // Format: https://drive.google.com/open?id=FILE_ID
+    // Format: https://drive.google.com/uc?id=FILE_ID
+    
+    const fileIdMatch = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch) {
+      fileId = fileIdMatch[1];
+    } else {
+      const idMatch = link.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (idMatch) {
+        fileId = idMatch[1];
+      }
+    }
+    
+    if (fileId) {
+      // Return the preview URL which works for embedding
+      return `https://drive.google.com/file/d/${fileId}/preview`;
+    }
+  }
+  
+  // Return original link if not a Google Drive link or couldn't parse
+  return link;
+};
+
 const MaterialViewer = () => {
   const { user } = React.useContext(AuthContext);
   const { subjectId } = useParams();
@@ -247,15 +281,16 @@ const MaterialViewer = () => {
                 <Watermark email={user.email} />
                 {selectedMaterial.type === 'pdf' ? (
                   <iframe
-                    src={selectedMaterial.link}
+                    src={getEmbedUrl(selectedMaterial.link, 'pdf')}
                     className="w-full h-[80vh]"
                     title={selectedMaterial.title}
                     frameBorder="0"
+                    allow="autoplay"
                   />
                 ) : (
                   <div className="relative">
                     <iframe
-                      src={selectedMaterial.link}
+                      src={getEmbedUrl(selectedMaterial.link, 'video')}
                       className="w-full h-[80vh]"
                       title={selectedMaterial.title}
                       frameBorder="0"
