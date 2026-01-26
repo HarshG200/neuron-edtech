@@ -70,16 +70,6 @@ const AuthPage = () => {
             Access premium study materials, video lectures, and comprehensive notes.
             Subscribe to your subjects and excel in your exams.
           </p>
-          <div className="grid grid-cols-2 gap-4 pt-6">
-            <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm">
-              <div className="text-3xl font-bold text-blue-600">500+</div>
-              <div className="text-sm text-gray-600">Study Materials</div>
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm">
-              <div className="text-3xl font-bold text-purple-600">1000+</div>
-              <div className="text-sm text-gray-600">Happy Students</div>
-            </div>
-          </div>
         </div>
 
         {/* Right side - Auth Forms */}
