@@ -50,7 +50,7 @@ class UserRegister(BaseModel):
     city: str
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    identifier: str  # Can be email or phone
     password: str
 
 class UserResponse(BaseModel):
