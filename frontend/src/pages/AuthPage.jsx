@@ -63,7 +63,7 @@ const AuthPage = () => {
             Master Your
             <br />
             <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Class 10 Subjects
+              Concepts
             </span>
           </h2>
           <p className="text-xl text-gray-600 leading-relaxed">

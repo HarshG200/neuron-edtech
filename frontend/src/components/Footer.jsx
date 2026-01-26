@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Shield } from 'lucide-react';
+import { Mail, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -9,19 +9,11 @@ const Footer = () => {
     <footer className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white mt-auto">
       <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-8 py-6">
         {/* Contact Row */}
-        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 mb-4">
+        <div className="flex justify-center items-center mb-4">
           <a href="mailto:support@neuronlearn.com" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm">
             <Mail className="w-4 h-4 text-blue-400" />
             support@neuronlearn.com
           </a>
-          <a href="tel:+919876543210" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm">
-            <Phone className="w-4 h-4 text-blue-400" />
-            +91 98765 43210
-          </a>
-          <span className="flex items-center gap-2 text-gray-300 text-sm">
-            <MapPin className="w-4 h-4 text-blue-400" />
-            Mumbai, Maharashtra
-          </span>
         </div>
 
         {/* Privacy Notice - Compact */}

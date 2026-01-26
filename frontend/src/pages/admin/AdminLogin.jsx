@@ -47,7 +47,7 @@ const AdminLogin = ({ onLoginSuccess }) => {
                 <Input
                   data-testid="admin-email-input"
                   type="email"
-                  placeholder="admin@neuron.com"
+                  placeholder="Enter admin email"
                   className="pl-10"
                   value={credentials.email}
                   onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
@@ -86,9 +86,6 @@ const AdminLogin = ({ onLoginSuccess }) => {
               {isLoading ? 'Signing in...' : 'Sign In to Admin Panel'}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm text-gray-500">
-            <p>Demo: admin@neuronlearn.com / admin123</p>
-          </div>
         </CardContent>
       </Card>
     </div>
