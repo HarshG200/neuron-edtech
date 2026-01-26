@@ -50,7 +50,7 @@ class UserRegister(BaseModel):
     city: str
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    identifier: str  # Can be email or phone
     password: str
 
 class UserResponse(BaseModel):
@@ -173,14 +173,22 @@ async def register(user_data: UserRegister):
 
 @api_router.post("/auth/login")
 async def login(credentials: UserLogin):
-    user = await db.users.find_one({'email': credentials.email})
+    identifier = credentials.identifier.strip()
+    
+    # Check if identifier is email or phone
+    # Try to find user by email first, then by phone
+    user = await db.users.find_one({'email': identifier})
+    if not user:
+        # Try finding by phone number
+        user = await db.users.find_one({'phone': identifier})
+    
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     if not verify_password(credentials.password, user['password']):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
-    token = create_jwt_token(credentials.email)
+    token = create_jwt_token(user['email'])
     
     return {
         'token': token,

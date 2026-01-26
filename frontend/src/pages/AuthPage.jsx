@@ -14,7 +14,7 @@ const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
-  const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [loginData, setLoginData] = useState({ identifier: '', password: '' });
   const [registerData, setRegisterData] = useState({
     email: '',
     password: '',
@@ -63,7 +63,7 @@ const AuthPage = () => {
             Master Your
             <br />
             <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Class 10 Subjects
+              Concepts
             </span>
           </h2>
           <p className="text-xl text-gray-600 leading-relaxed">
@@ -103,16 +103,16 @@ const AuthPage = () => {
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4" data-testid="login-form">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Email</label>
+                    <label className="text-sm font-medium">Email or Phone</label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <Input
                         data-testid="login-email-input"
-                        type="email"
-                        placeholder="your@email.com"
+                        type="text"
+                        placeholder="email@example.com or +91 9999999999"
                         className="pl-10"
-                        value={loginData.email}
-                        onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                        value={loginData.identifier}
+                        onChange={(e) => setLoginData({ ...loginData, identifier: e.target.value })}
                         required
                       />
                     </div>
