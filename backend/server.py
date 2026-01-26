@@ -574,8 +574,12 @@ async def get_admin_user(credentials: HTTPAuthorizationCredentials = Depends(sec
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
+class AdminLoginRequest(BaseModel):
+    email: str
+    password: str
+
 @api_router.post("/admin/login")
-async def admin_login(credentials: UserLogin):
+async def admin_login(credentials: AdminLoginRequest):
     """Admin login"""
     if credentials.email != ADMIN_EMAIL:
         raise HTTPException(status_code=401, detail="Invalid credentials")
