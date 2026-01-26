@@ -103,16 +103,16 @@ const AuthPage = () => {
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4" data-testid="login-form">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Email</label>
+                    <label className="text-sm font-medium">Email or Phone</label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <Input
                         data-testid="login-email-input"
-                        type="email"
-                        placeholder="your@email.com"
+                        type="text"
+                        placeholder="email@example.com or +91 9999999999"
                         className="pl-10"
-                        value={loginData.email}
-                        onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                        value={loginData.identifier}
+                        onChange={(e) => setLoginData({ ...loginData, identifier: e.target.value })}
                         required
                       />
                     </div>
