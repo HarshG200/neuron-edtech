@@ -294,14 +294,15 @@ const MaterialViewer = () => {
                     allow="autoplay"
                   />
                 ) : (
-                  <div className="relative">
+                  <div className="relative bg-black aspect-video">
                     <iframe
                       src={getEmbedUrl(selectedMaterial.link, 'video')}
-                      className="w-full h-[80vh]"
+                      className="w-full h-full absolute top-0 left-0"
                       title={selectedMaterial.title}
                       frameBorder="0"
-                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                       allowFullScreen
+                      style={{ minHeight: '500px' }}
                     />
                   </div>
                 )}
