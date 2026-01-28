@@ -791,6 +791,51 @@ async def get_all_payments(admin: dict = Depends(get_admin_user)):
     payments = await db.payments.find({}, {'_id': 0}).to_list(1000)
     return payments
 
+@api_router.post("/admin/cleanup-subjects")
+async def cleanup_subjects(admin: dict = Depends(get_admin_user)):
+    """Clean up subjects by removing trailing spaces from IDs and names"""
+    subjects = await db.subjects.find({}).to_list(1000)
+    cleaned_count = 0
+    
+    for subject in subjects:
+        old_id = subject['id']
+        old_name = subject.get('subject_name', '')
+        
+        # Strip whitespace
+        new_id = old_id.strip()
+        new_name = old_name.strip()
+        board = subject.get('board', '').strip()
+        class_name = subject.get('class_name', '').strip()
+        
+        # Regenerate ID properly
+        new_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{new_name.lower()}"
+        
+        if old_id != new_id or old_name != new_name:
+            # Update materials and subscriptions first
+            if old_id != new_id:
+                await db.materials.update_many(
+                    {'subject_id': old_id},
+                    {'$set': {'subject_id': new_id}}
+                )
+                await db.subscriptions.update_many(
+                    {'subject_id': old_id},
+                    {'$set': {'subject_id': new_id}}
+                )
+            
+            # Update subject
+            await db.subjects.update_one(
+                {'_id': subject['_id']},
+                {'$set': {
+                    'id': new_id,
+                    'subject_name': new_name,
+                    'board': board,
+                    'class_name': class_name
+                }}
+            )
+            cleaned_count += 1
+    
+    return {'message': f'Cleaned up {cleaned_count} subjects', 'count': cleaned_count}
+
 @api_router.get("/admin/materials")
 async def get_all_materials(admin: dict = Depends(get_admin_user)):
     """Get all materials"""
