@@ -110,7 +110,7 @@ const BoardsTab = ({ onUpdate }) => {
   return (
     <Card className="shadow-xl border-0">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center space-x-3">
             <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-2 rounded-lg">
               <GraduationCap className="w-6 h-6 text-white" />
@@ -125,7 +125,7 @@ const BoardsTab = ({ onUpdate }) => {
             if (!open) resetForm();
           }}>
             <DialogTrigger asChild>
-              <Button onClick={handleAdd} className="bg-gradient-to-r from-purple-600 to-pink-600">
+              <Button onClick={handleAdd} className="bg-gradient-to-r from-purple-600 to-pink-600 w-full sm:w-auto">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Board
               </Button>
