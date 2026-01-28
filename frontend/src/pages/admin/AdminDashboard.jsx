@@ -24,6 +24,7 @@ import MaterialsTab from './tabs/MaterialsTab';
 import SubscriptionsTab from './tabs/SubscriptionsTab';
 import PaymentsTab from './tabs/PaymentsTab';
 import UpdatesTab from './tabs/UpdatesTab';
+import SettingsTab from './tabs/SettingsTab';
 
 const AdminDashboard = ({ onLogout }) => {
   const [stats, setStats] = useState({ users: 0, subjects: 0, subscriptions: 0, revenue: 0 });
@@ -162,6 +163,10 @@ const AdminDashboard = ({ onLogout }) => {
               <CreditCard className="w-4 h-4 mr-1.5" />
               Payments
             </TabsTrigger>
+            <TabsTrigger value="settings" className="px-3 py-2 text-sm">
+              <Settings className="w-4 h-4 mr-1.5" />
+              Settings
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="boards">
@@ -190,6 +195,10 @@ const AdminDashboard = ({ onLogout }) => {
 
           <TabsContent value="payments">
             <PaymentsTab />
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <SettingsTab />
           </TabsContent>
         </Tabs>
       </div>
