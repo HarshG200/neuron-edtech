@@ -428,7 +428,9 @@ class EdTechAPITester:
 
 def main():
     tester = EdTechAPITester()
-    success = tester.run_all_tests()
+    
+    # Run admin password change tests specifically
+    success = tester.run_admin_password_tests()
     return 0 if success else 1
 
 if __name__ == "__main__":
