@@ -345,6 +345,30 @@ class EdTechAPITester:
                      f"Correctly rejected no auth" if success else f"Status: {status}")
         
         return True
+    def run_admin_password_tests(self):
+        """Run admin password change tests specifically"""
+        print("🔐 Starting Admin Password Change Tests")
+        print(f"Backend URL: {self.base_url}")
+        print("=" * 60)
+
+        # Test admin password change flow
+        if not self.test_admin_password_change_flow():
+            print("❌ Admin password change flow failed")
+        
+        # Test error cases
+        if not self.test_admin_password_change_errors():
+            print("❌ Admin password change error tests failed")
+
+        # Print final results
+        print("\n" + "=" * 60)
+        print(f"📊 Test Results: {self.tests_passed}/{self.tests_run} tests passed")
+        
+        if self.tests_passed == self.tests_run:
+            print("🎉 All admin password tests passed!")
+            return True
+        else:
+            print(f"⚠️  {self.tests_run - self.tests_passed} tests failed")
+            return False
 
     def run_all_tests(self):
         """Run all API tests"""
