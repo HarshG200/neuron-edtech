@@ -31,12 +31,15 @@ class EdTechAPITester:
         else:
             print(f"❌ {name} - FAILED {details}")
 
-    def make_request(self, method, endpoint, data=None, expected_status=200):
+    def make_request(self, method, endpoint, data=None, expected_status=200, use_admin_token=False):
         """Make HTTP request with proper headers"""
         url = f"{self.base_url}/{endpoint}"
         headers = {'Content-Type': 'application/json'}
-        if self.token:
-            headers['Authorization'] = f'Bearer {self.token}'
+        
+        # Use admin token if specified, otherwise use regular token
+        token_to_use = self.admin_token if use_admin_token else self.token
+        if token_to_use:
+            headers['Authorization'] = f'Bearer {token_to_use}'
 
         try:
             if method == 'GET':
