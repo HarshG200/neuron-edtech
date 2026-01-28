@@ -89,7 +89,7 @@ const RefundPolicy = () => {
           </CardHeader>
           <CardContent className="text-gray-600">
             <ol className="list-decimal list-inside space-y-3">
-              <li>Email your refund request to <strong>support@neuronlearn.com</strong></li>
+              <li>Email your refund request to <strong>neuronbyelv@gmail.com</strong></li>
               <li>Include your registered email, order ID, and reason for refund</li>
               <li>Our team will review your request within 2-3 business days</li>
               <li>If approved, refund will be processed within 5-7 business days</li>
@@ -110,7 +110,7 @@ const RefundPolicy = () => {
               If you have any questions about our refund policy or need assistance, please contact us:
             </p>
             <p className="mt-2">
-              <strong>Email:</strong> support@neuronlearn.com<br />
+              <strong>Email:</strong> neuronbyelv@gmail.com<br />
               <strong>Phone:</strong> +91 98765 43210<br />
               <strong>Hours:</strong> Monday - Saturday, 9 AM - 6 PM IST
             </p>

@@ -139,7 +139,7 @@ const PrivacyPolicy = () => {
               If you have any questions about this Privacy Policy, please contact us at:
             </p>
             <p className="mt-2">
-              <strong>Email:</strong> support@neuronlearn.com<br />
+              <strong>Email:</strong> neuronbyelv@gmail.com<br />
               <strong>Phone:</strong> +91 98765 43210
             </p>
           </CardContent>

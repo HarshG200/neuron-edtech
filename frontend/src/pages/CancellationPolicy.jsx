@@ -86,7 +86,7 @@ const CancellationPolicy = () => {
               If you wish to delete your account entirely:
             </p>
             <ol className="list-decimal list-inside space-y-2">
-              <li>Send an email to support@neuronlearn.com with subject "Account Deletion Request"</li>
+              <li>Send an email to neuronbyelv@gmail.com with subject "Account Deletion Request"</li>
               <li>Include your registered email address in the body</li>
               <li>Your request will be processed within 3-5 business days</li>
               <li>You will receive confirmation once the deletion is complete</li>
@@ -106,7 +106,7 @@ const CancellationPolicy = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex items-center gap-2">
                 <Mail className="w-5 h-5 text-blue-600" />
-                <span>support@neuronlearn.com</span>
+                <span>neuronbyelv@gmail.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-5 h-5 text-blue-600" />

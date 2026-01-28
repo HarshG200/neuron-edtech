@@ -145,11 +145,11 @@ const SubjectsTab = ({ onUpdate }) => {
   return (
     <Card className="shadow-lg border border-gray-200">
       <CardHeader className="border-b bg-gray-50/50">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <CardTitle className="text-xl font-semibold text-gray-800">Subject Management</CardTitle>
           <Button 
             onClick={() => handleOpenDialog()} 
-            className="bg-gradient-to-r from-purple-600 to-pink-600"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 w-full sm:w-auto"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Subject

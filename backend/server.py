@@ -559,8 +559,22 @@ async def verify_payment(
 
 # ============= Admin Routes =============
 
-ADMIN_EMAIL = "admin@neuronlearn.com"
-ADMIN_PASSWORD_HASH = hash_password("admin123")  # Change this in production
+DEFAULT_ADMIN_EMAIL = "admin@neuronbyelv.com"
+DEFAULT_ADMIN_PASSWORD_HASH = hash_password("admin123")
+
+async def get_or_create_admin():
+    """Get admin from database or create default admin"""
+    admin = await db.admins.find_one({}, {'_id': 0})
+    if not admin:
+        # Create default admin
+        admin = {
+            'id': 'admin-001',
+            'email': DEFAULT_ADMIN_EMAIL,
+            'password': DEFAULT_ADMIN_PASSWORD_HASH,
+            'created_at': datetime.now(timezone.utc).isoformat()
+        }
+        await db.admins.insert_one(admin)
+    return admin
 
 async def get_admin_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
@@ -581,10 +595,12 @@ class AdminLoginRequest(BaseModel):
 @api_router.post("/admin/login")
 async def admin_login(credentials: AdminLoginRequest):
     """Admin login"""
-    if credentials.email != ADMIN_EMAIL:
+    admin = await get_or_create_admin()
+    
+    if credentials.email != admin['email']:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
-    if not verify_password(credentials.password, ADMIN_PASSWORD_HASH):
+    if not verify_password(credentials.password, admin['password']):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     token_payload = {
@@ -595,6 +611,35 @@ async def admin_login(credentials: AdminLoginRequest):
     token = jwt.encode(token_payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     
     return {'token': token, 'message': 'Admin login successful'}
+
+class AdminPasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
+@api_router.post("/admin/change-password")
+async def change_admin_password(
+    data: AdminPasswordChange,
+    admin: dict = Depends(get_admin_user)
+):
+    """Change admin password"""
+    admin_record = await db.admins.find_one({}, {'_id': 0})
+    
+    if not admin_record:
+        raise HTTPException(status_code=404, detail="Admin not found")
+    
+    if not verify_password(data.current_password, admin_record['password']):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+    
+    if len(data.new_password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+    
+    new_password_hash = hash_password(data.new_password)
+    await db.admins.update_one(
+        {'id': admin_record['id']},
+        {'$set': {'password': new_password_hash}}
+    )
+    
+    return {'message': 'Password changed successfully'}
 
 # ============= Board Management =============
 
@@ -746,6 +791,51 @@ async def get_all_payments(admin: dict = Depends(get_admin_user)):
     payments = await db.payments.find({}, {'_id': 0}).to_list(1000)
     return payments
 
+@api_router.post("/admin/cleanup-subjects")
+async def cleanup_subjects(admin: dict = Depends(get_admin_user)):
+    """Clean up subjects by removing trailing spaces from IDs and names"""
+    subjects = await db.subjects.find({}).to_list(1000)
+    cleaned_count = 0
+    
+    for subject in subjects:
+        old_id = subject['id']
+        old_name = subject.get('subject_name', '')
+        
+        # Strip whitespace
+        new_id = old_id.strip()
+        new_name = old_name.strip()
+        board = subject.get('board', '').strip()
+        class_name = subject.get('class_name', '').strip()
+        
+        # Regenerate ID properly
+        new_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{new_name.lower()}"
+        
+        if old_id != new_id or old_name != new_name:
+            # Update materials and subscriptions first
+            if old_id != new_id:
+                await db.materials.update_many(
+                    {'subject_id': old_id},
+                    {'$set': {'subject_id': new_id}}
+                )
+                await db.subscriptions.update_many(
+                    {'subject_id': old_id},
+                    {'$set': {'subject_id': new_id}}
+                )
+            
+            # Update subject
+            await db.subjects.update_one(
+                {'_id': subject['_id']},
+                {'$set': {
+                    'id': new_id,
+                    'subject_name': new_name,
+                    'board': board,
+                    'class_name': class_name
+                }}
+            )
+            cleaned_count += 1
+    
+    return {'message': f'Cleaned up {cleaned_count} subjects', 'count': cleaned_count}
+
 @api_router.get("/admin/materials")
 async def get_all_materials(admin: dict = Depends(get_admin_user)):
     """Get all materials"""
@@ -772,13 +862,18 @@ async def create_subject(
     admin: dict = Depends(get_admin_user)
 ):
     """Create new subject"""
-    subject_id = f"{subject_data.board.lower()}-{subject_data.class_name.lower().replace(' ', '-')}-{subject_data.subject_name.lower()}"
+    # Strip whitespace from all text fields
+    board = subject_data.board.strip()
+    class_name = subject_data.class_name.strip()
+    subject_name = subject_data.subject_name.strip()
+    
+    subject_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{subject_name.lower()}"
     
     subject_doc = {
         'id': subject_id,
-        'board': subject_data.board,
-        'class_name': subject_data.class_name,
-        'subject_name': subject_data.subject_name,
+        'board': board,
+        'class_name': class_name,
+        'subject_name': subject_name,
         'price': subject_data.price,
         'duration_months': subject_data.duration_months,
         'is_visible': subject_data.is_visible
@@ -894,13 +989,44 @@ async def update_subject(
     admin: dict = Depends(get_admin_user)
 ):
     """Update existing subject"""
+    # Strip whitespace from all text fields
+    board = subject_data.board.strip()
+    class_name = subject_data.class_name.strip()
+    subject_name = subject_data.subject_name.strip()
+    
+    # Try to find the subject with or without trailing spaces in ID
+    subject = await db.subjects.find_one({'id': subject_id})
+    if not subject:
+        # Try with a space at the end (for legacy data)
+        subject = await db.subjects.find_one({'id': f"{subject_id} "})
+        if subject:
+            subject_id = f"{subject_id} "
+    
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    
+    # Generate new ID based on updated data
+    new_subject_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{subject_name.lower()}"
+    
     update_data = {
-        'board': subject_data.board,
-        'class_name': subject_data.class_name,
-        'subject_name': subject_data.subject_name,
+        'id': new_subject_id,
+        'board': board,
+        'class_name': class_name,
+        'subject_name': subject_name,
         'price': int(subject_data.price),
         'duration_months': subject_data.duration_months
     }
+    
+    # If ID changed, update materials and subscriptions
+    if subject_id != new_subject_id:
+        await db.materials.update_many(
+            {'subject_id': subject_id},
+            {'$set': {'subject_id': new_subject_id}}
+        )
+        await db.subscriptions.update_many(
+            {'subject_id': subject_id},
+            {'$set': {'subject_id': new_subject_id}}
+        )
     
     result = await db.subjects.update_one(
         {'id': subject_id},
