@@ -8,6 +8,7 @@ class EdTechAPITester:
     def __init__(self, base_url="https://neuron-study.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
+        self.admin_token = None
         self.tests_run = 0
         self.tests_passed = 0
         self.test_user_email = f"student{datetime.now().strftime('%H%M%S')}@test.com"
@@ -18,6 +19,8 @@ class EdTechAPITester:
             "city": "Mumbai",
             "password": "test123"
         }
+        self.admin_email = "admin@neuronbyelv.com"
+        self.admin_password = "admin123"
 
     def log_test(self, name, success, details=""):
         """Log test results"""
