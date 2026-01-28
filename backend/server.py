@@ -559,8 +559,22 @@ async def verify_payment(
 
 # ============= Admin Routes =============
 
-ADMIN_EMAIL = "admin@neuronbyelv.com"
-ADMIN_PASSWORD_HASH = hash_password("admin123")  # Change this in production
+DEFAULT_ADMIN_EMAIL = "admin@neuronbyelv.com"
+DEFAULT_ADMIN_PASSWORD_HASH = hash_password("admin123")
+
+async def get_or_create_admin():
+    """Get admin from database or create default admin"""
+    admin = await db.admins.find_one({}, {'_id': 0})
+    if not admin:
+        # Create default admin
+        admin = {
+            'id': 'admin-001',
+            'email': DEFAULT_ADMIN_EMAIL,
+            'password': DEFAULT_ADMIN_PASSWORD_HASH,
+            'created_at': datetime.now(timezone.utc).isoformat()
+        }
+        await db.admins.insert_one(admin)
+    return admin
 
 async def get_admin_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
@@ -581,10 +595,12 @@ class AdminLoginRequest(BaseModel):
 @api_router.post("/admin/login")
 async def admin_login(credentials: AdminLoginRequest):
     """Admin login"""
-    if credentials.email != ADMIN_EMAIL:
+    admin = await get_or_create_admin()
+    
+    if credentials.email != admin['email']:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
-    if not verify_password(credentials.password, ADMIN_PASSWORD_HASH):
+    if not verify_password(credentials.password, admin['password']):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     token_payload = {
@@ -595,6 +611,35 @@ async def admin_login(credentials: AdminLoginRequest):
     token = jwt.encode(token_payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     
     return {'token': token, 'message': 'Admin login successful'}
+
+class AdminPasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
+@api_router.post("/admin/change-password")
+async def change_admin_password(
+    data: AdminPasswordChange,
+    admin: dict = Depends(get_admin_user)
+):
+    """Change admin password"""
+    admin_record = await db.admins.find_one({}, {'_id': 0})
+    
+    if not admin_record:
+        raise HTTPException(status_code=404, detail="Admin not found")
+    
+    if not verify_password(data.current_password, admin_record['password']):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+    
+    if len(data.new_password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+    
+    new_password_hash = hash_password(data.new_password)
+    await db.admins.update_one(
+        {'id': admin_record['id']},
+        {'$set': {'password': new_password_hash}}
+    )
+    
+    return {'message': 'Password changed successfully'}
 
 # ============= Board Management =============
 
