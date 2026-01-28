@@ -1,0 +1,190 @@
+<analysis>**original_problem_statement:** 
+Project Mission: Production-Grade Study Materials Platform Neuron
+
+1.  **Context & Architecture:**
+    *   Full-stack EdTech application using React 19 (Vite), Tailwind CSS, Shadcn/UI for the frontend, and FastAPI with MongoDB for the backend.
+2.  **Core Features:**
+    *   **User Authentication:** Allow users to register and log in using either their email or phone number.
+    *   **Subject Dashboard:** A responsive grid of subject cards. Buy Plan button for non-subscribed subjects, Open Material for subscribed ones.
+    *   **Subscription & Payments:** Integrate Razorpay to handle payments for subject subscriptions. A secure webhook updates subscriptions upon successful payment.
+    *   **Material Viewer:** Embed PDFs (from Google Drive, handling various share link formats) and videos (from Bunny.net).
+    *   **Security:** Protect material links for subscribers only, apply a dynamic email watermark on content, and disable right-click/save actions on the material viewer.
+    *   **Daily Updates:** A side drawer/column for admins to post free updates, announcements, or materials for all users.
+3.  **Admin Panel:**
+    *   A comprehensive, token-protected admin panel to manage boards, subjects, materials, and daily updates.
+    *   Admins can view lists of users, subscriptions, and payments.
+    *   Implement CRUD operations for subjects and materials, including edit functionality.
+    *   Provide a feature for admins to change their own passwords securely.
+4.  **Branding & UI/UX:**
+    *   Brand the application as Neuron using the provided logo.
+    *   Maintain a modern, clean, and professional UI (Slate/Indigo palette) with a consistent layout and compact footer.
+    *   Ensure the app is responsive and provides a good user experience, including smooth transitions and scrolling to the top on page navigation.
+    *   Remove all Emergent branding and boilerplate files.
+    *   Create comprehensive README files for the project.
+
+**User's preferred language**: English
+
+**what currently exists?**
+A full-stack EdTech platform named Neuron running on a Vite-based React frontend and a FastAPI/MongoDB backend. Key features include:
+- User authentication supporting login via email or phone number.
+- A subject dashboard with a Razorpay-integrated subscription system.
+- A material viewer that correctly embeds Google Drive PDFs and includes UI protection (right-click disabled, etc.) and a dynamic email watermark.
+- A comprehensive admin panel with full CRUD capabilities for boards, subjects, and materials (including edit functions). Admins can also manage a Daily Updates feed.
+- The UI has been significantly refined with an updated logo, consistent container widths, a compact footer, and improved responsive layouts in the admin panel.
+- The project has been successfully migrated from Create React App to Vite to support React 19 and improve performance.
+- Policy pages (Privacy, Terms, etc.) have been created and are accessible from the footer.
+
+**Last working item**:
+- Last item agent was working: Implementing a feature for admins to change their password and updating the hardcoded support/admin email addresses. The agent successfully updated all email addresses throughout the codebase. It then began refactoring the backend () to move admin credentials from hardcoded variables into the  MongoDB collection to facilitate the password change functionality.
+- Status: IN PROGRESS
+- Agent Testing Done: N
+- Which testing method agent to use?: both
+- User Testing Done: N
+
+**All Pending/In progress Issue list**:
+- **Issue 1: Admin Panel POST/PUT API Body Handling (High Recurrence Risk)**
+    - **Description (P1):** In previous sessions, the agent had a recurring issue of implementing FastAPI POST/PUT endpoints to expect  parameters instead of a JSON . Although recent endpoints were created correctly, this remains a high-risk area.
+    - **Next debug checklist:** When creating any new  or  endpoint in , ensure it uses a Pydantic  for the request body and the parameter is defined with  if not using a model directly.
+    - **Why fix this issue and what will be achieved with the fix?** Prevents frontend forms from failing with 422 Unprocessable Entity errors. Ensures data creation and update functionalities work as expected.
+    - **Status:** RESOLVED (but requires constant vigilance)
+    - **Is recurring issue?** Y
+    - **Should Test frontend/backend/both after fix?** Backend
+
+**In progress Task List**:
+- **Task 1: Complete Admin Password Change Feature (P0)**
+    - **Description:** Allow admins to change their password from within the admin panel.
+    - **Where to resume:** Continue editing . The process of moving admin credentials from hardcoded variables to the  collection in MongoDB was initiated but not completed.
+    - **Next Steps:**
+        1.  **Backend:**
+            -   Finalize the logic in  to fetch admin credentials from the  collection for login.
+            -   Create a seeding mechanism (e.g., on startup if the collection is empty) to create the initial admin user with the credentials  / .
+            -   Implement a new secure endpoint, like , that verifies the old password and updates it with the new one.
+        2.  **Frontend:**
+            -   Add a Settings or Profile section to the admin dashboard ().
+            -   Create a form within this new section for the admin to enter their current and new passwords.
+            -   Connect the form to the new backend endpoint.
+    - **What will be achieved with this?** Admins will have a secure, standard way to manage their credentials, removing the need for hardcoded passwords.
+    - **Status:** IN PROGRESS
+    - **Should Test frontend/backend/both after fix?** both
+    - **Blocked on something:** None
+
+**Upcoming and Future Tasks**
+- **Upcoming Tasks:**
+  - **Task 1 (P1): Implement Video Player with Bunny.net:** The material viewer () is set up to handle PDFs but needs to be updated to embed videos using Bunny.net Stream links, as specified in the original requirements.
+- **Future Tasks:**
+  - **Task 1 (P2): Refactor :** The main backend file is over 900 lines and contains all models, routes, and logic. It should be broken down into a more scalable structure (e.g., , , ).
+  - **Task 2 (P2): Comprehensive E2E Testing:** Conduct a full end-to-end test of the complete user flow (registration, subscription, material access) and admin flow using the testing agent.
+
+**Completed work in this session**
+- **Vite Migration:** Migrated the frontend from Create React App to Vite to resolve React 19 deployment issues.
+- **Login with Email or Phone:** Implemented dual-method login for users on both frontend and backend.
+- **Admin Edit Functionality:** Added the ability for admins to edit existing Subjects and Materials, including the necessary backend  endpoints.
+- **Daily Updates Feature:** Implemented a new feature for admins to post announcements, which are displayed to users in a slide-out drawer accessible via a bell icon in the header.
+- **UI & Branding Overhaul:**
+    - Updated the application logo several times, including enhancing a low-contrast image to ensure visibility.
+    - Removed all Emergent-specific branding and boilerplate files (, bottom-right badge).
+    - Established a wider, fixed-width container for a more spacious and consistent layout on client pages.
+    - Made the footer more compact and updated the contact email.
+- **Major Bug Fixes:**
+    - **Admin Login Failure (422 Error):** Resolved a critical bug that locked admins out by creating a dedicated Pydantic model () for the admin login endpoint.
+    - **Google Drive PDF Embedding:** Fixed an issue preventing embedded Google Drive PDFs from displaying by implementing a URL formatting helper function.
+    - **Vite Preview Host Error:** Corrected the  to allow access from the preview domain.
+    - **Admin Panel UI:** Fixed responsive layout issues where tabs would overlap and improved the structure of data tables.
+- **Policy Pages & Navigation:** Created static pages for Privacy Policy, Terms, etc., and implemented a  component for smooth navigation.
+- **Documentation:** Authored comprehensive  files for the root, frontend, and backend directories.
+
+**Known issue recurrence from previous fork**
+- **Issue recurrence in previous fork**: Admin Panel POST/PUT API Body Handling
+- **Recurrence count**: 1+
+- **Status**: RESOLVED
+Note: This issue of using  instead of  for POST/PUT requests in FastAPI has occurred before. The agent must remain vigilant to use Pydantic models for request bodies to prevent this from happening again.
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+- **Backend:** FastAPI, MongoDB (using ), JWT for authentication.
+- **Frontend:** React 19, **Vite**, React Router, Tailwind CSS, Shadcn/UI, , .
+- **Payments:** Razorpay API.
+- **Deployment:** The application runs in a containerized environment managed by . A  file has been added for frontend deployment.
+
+**key DB schema**
+-   : {email, password_hash, name, phone, city, created_at}
+-   : {email, password_hash}
+-   : {name, full_name}
+-   : {name, description, board_id, price, duration, image_url, is_visible}
+-   : {subject_id, title, description, type:['pdf', 'video'], link}
+-   : {user_id, subject_id, expires_at, created_at, razorpay_payment_id}
+-   : {user_id, order_id, amount, created_at}
+-   : {title, content, link, created_at}
+
+**changes in tech stack**
+-   The frontend build system was migrated from Create React App () to **Vite**.
+
+**All files of reference**
+-   : The monolithic backend file containing all API logic. (Needs refactoring).
+-   : The configuration file for the Vite frontend build tool.
+-   : The main frontend component containing the router setup.
+-   : The user login/registration page, updated for email/phone login.
+-   : The layout for the admin panel, where the new settings tab will be added.
+-   : Admin tab for managing subjects, with edit functionality.
+-   : Admin tab for managing materials, with edit functionality.
+-   : The component for viewing study materials, updated with the Google Drive embed fix.
+-   , , : Project documentation files.
+
+**Areas that need refactoring**:
+-   The backend logic is consolidated in a single large file, . To improve maintainability and scalability, it should be refactored into a modular structure with separate directories for routes, models, and business logic (services).
+
+**key api endpoints**
+- **User Auth:** ,  (accepts  for email or phone)
+- **Admin Auth:**  (fixed),  (in progress)
+- **Admin CRUD:**
+    -  (new)
+    -  (new)
+    -  (new)
+    -  (new)
+
+**Critical Info for New Agent**
+-   **Vite Migration Complete:** The frontend now uses Vite. Key files like  have moved,  component files are now , and config files (, ) have been renamed to . Do not use .
+-   **Admin Credentials in DB:** The backend is being refactored to use the  MongoDB collection instead of hardcoded variables. The admin login will fail until this refactor is complete and the initial admin user is seeded into the database.
+-   **User Login Flexibility:** The user login endpoint () now accepts an  field which can be either an email or a phone number.
+
+**documents and test reports created in this job**
+-   
+-   
+-   
+-   
+-   
+
+**Last 10 User Messages and any pending HUMAN messages**
+1.  **Lets change support email to... and admin email to... and how about we have a feature for admin to change the password..."** - Request to update emails and add admin password change feature. **Status: IN PROGRESS**.
+2.  **"It worked!"** - Confirmation that the admin login fix was successful. **Status: RESOLVED**.
+3.  **"After logging into the admin panel I am seeing a blank page and getting this 422..."** - User reported the critical admin login bug. **Status: RESOLVED**.
+4.  **"👍"** - Acknowledgment that the removal of counters from the auth page was successful. **Status: RESOLVED**.
+5.  **"Remove materials and students counter from the login and register page"** - Request to simplify the auth page UI. **Status: RESOLVED**.
+6.  **"Remove Phone and Location from Footer, change Login Page Title, Remove admin credentials from Admin Pane, user can login using email and also phone number"** - A batch of UI and functionality requests. **Status: RESOLVED**.
+7.  **"I have tested the PDF display... accordingly"** - User reported a batch of new tasks after confirming the PDF fix. **Status: STARTED**.
+8.  **"Ive created a material and shared it as a open link pdf... I am seeing this error...** - User reported the Google Drive PDF embed issue. **Status: RESOLVED**.
+9.  **Done! Looks good for now!** - Confirmation that the UI fixes for the Updates drawer were successful. **Status: RESOLVED**.
+10. **UI does not looks good... horizontal scroll... side drawer it does not opens up... bad and broken transition** - User reported UI bugs with the new Daily Updates feature. **Status: RESOLVED**.
+
+**Project Health Check:**
+-   **Working:** The majority of the application is functional, including user auth, subscriptions, admin CRUD operations, and the Vite-based frontend.
+-   **Broken:** The admin login is temporarily non-functional due to the in-progress backend refactor to move credentials to the database.
+-   **Mocked:** Video playback in the  is not yet implemented; it only has placeholders.
+
+**3rd Party Integrations**
+-   **Razorpay**: Live and integrated for payment processing.
+
+**Testing status**
+-   **Testing agent used after significant changes**: NO
+-   **Troubleshoot agent used after agent stuck in loop**: NO
+-   **Test files created**: None in this session.
+-   **Known regressions**: None.
+
+**Credentials to test flow:**
+-   **Admin:**  / . **NOTE:** This is the target credential. It will only work after the backend refactor is completed and the admin user is seeded in the database.
+-   **User:** Can be created via the registration page on the frontend.
+
+**What agent forgot to execute**
+- The requirement to implement video embedding using Bunny.net in the  component is still pending from the original project specification.</analysis>
