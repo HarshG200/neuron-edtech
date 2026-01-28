@@ -817,13 +817,18 @@ async def create_subject(
     admin: dict = Depends(get_admin_user)
 ):
     """Create new subject"""
-    subject_id = f"{subject_data.board.lower()}-{subject_data.class_name.lower().replace(' ', '-')}-{subject_data.subject_name.lower()}"
+    # Strip whitespace from all text fields
+    board = subject_data.board.strip()
+    class_name = subject_data.class_name.strip()
+    subject_name = subject_data.subject_name.strip()
+    
+    subject_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{subject_name.lower()}"
     
     subject_doc = {
         'id': subject_id,
-        'board': subject_data.board,
-        'class_name': subject_data.class_name,
-        'subject_name': subject_data.subject_name,
+        'board': board,
+        'class_name': class_name,
+        'subject_name': subject_name,
         'price': subject_data.price,
         'duration_months': subject_data.duration_months,
         'is_visible': subject_data.is_visible
@@ -939,13 +944,44 @@ async def update_subject(
     admin: dict = Depends(get_admin_user)
 ):
     """Update existing subject"""
+    # Strip whitespace from all text fields
+    board = subject_data.board.strip()
+    class_name = subject_data.class_name.strip()
+    subject_name = subject_data.subject_name.strip()
+    
+    # Try to find the subject with or without trailing spaces in ID
+    subject = await db.subjects.find_one({'id': subject_id})
+    if not subject:
+        # Try with a space at the end (for legacy data)
+        subject = await db.subjects.find_one({'id': f"{subject_id} "})
+        if subject:
+            subject_id = f"{subject_id} "
+    
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    
+    # Generate new ID based on updated data
+    new_subject_id = f"{board.lower()}-{class_name.lower().replace(' ', '-')}-{subject_name.lower()}"
+    
     update_data = {
-        'board': subject_data.board,
-        'class_name': subject_data.class_name,
-        'subject_name': subject_data.subject_name,
+        'id': new_subject_id,
+        'board': board,
+        'class_name': class_name,
+        'subject_name': subject_name,
         'price': int(subject_data.price),
         'duration_months': subject_data.duration_months
     }
+    
+    # If ID changed, update materials and subscriptions
+    if subject_id != new_subject_id:
+        await db.materials.update_many(
+            {'subject_id': subject_id},
+            {'$set': {'subject_id': new_subject_id}}
+        )
+        await db.subscriptions.update_many(
+            {'subject_id': subject_id},
+            {'$set': {'subject_id': new_subject_id}}
+        )
     
     result = await db.subjects.update_one(
         {'id': subject_id},
