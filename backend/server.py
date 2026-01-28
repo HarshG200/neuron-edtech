@@ -559,7 +559,7 @@ async def verify_payment(
 
 # ============= Admin Routes =============
 
-ADMIN_EMAIL = "admin@neuronlearn.com"
+ADMIN_EMAIL = "admin@neuronbyelv.com"
 ADMIN_PASSWORD_HASH = hash_password("admin123")  # Change this in production
 
 async def get_admin_user(credentials: HTTPAuthorizationCredentials = Depends(security)):

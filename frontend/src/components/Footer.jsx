@@ -10,9 +10,9 @@ const Footer = () => {
       <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-8 py-6">
         {/* Contact Row */}
         <div className="flex justify-center items-center mb-4">
-          <a href="mailto:support@neuronlearn.com" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm">
+          <a href="mailto:neuronbyelv@gmail.com" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm">
             <Mail className="w-4 h-4 text-blue-400" />
-            support@neuronlearn.com
+            neuronbyelv@gmail.com
           </a>
         </div>
 
