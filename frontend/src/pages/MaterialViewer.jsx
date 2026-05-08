@@ -17,9 +17,15 @@ const Watermark = ({ email }) => {
   );
 };
 
-// Helper function to convert Google Drive links to embeddable format
+// Helper function to convert Google Drive and Bunny.net links to embeddable format
 const getEmbedUrl = (link, type) => {
   if (!link) return '';
+  
+  // Handle Bunny.net iframe.mediadelivery.net links
+  if (link.includes('iframe.mediadelivery.net') || link.includes('bunny')) {
+    // Already in embed format, return as is
+    return link;
+  }
   
   // Handle Google Drive links
   if (link.includes('drive.google.com')) {
@@ -47,7 +53,7 @@ const getEmbedUrl = (link, type) => {
     }
   }
   
-  // Return original link if not a Google Drive link or couldn't parse
+  // Return original link if not a Google Drive or Bunny link
   return link;
 };
 
@@ -288,14 +294,15 @@ const MaterialViewer = () => {
                     allow="autoplay"
                   />
                 ) : (
-                  <div className="relative">
+                  <div className="relative bg-black aspect-video">
                     <iframe
                       src={getEmbedUrl(selectedMaterial.link, 'video')}
-                      className="w-full h-[80vh]"
+                      className="w-full h-full absolute top-0 left-0"
                       title={selectedMaterial.title}
                       frameBorder="0"
-                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                       allowFullScreen
+                      style={{ minHeight: '500px' }}
                     />
                   </div>
                 )}
