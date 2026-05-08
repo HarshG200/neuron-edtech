@@ -21,9 +21,11 @@ load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
-# Use certifi CA bundle only for Atlas/cloud connections to fix SSL cert verification errors on hosted envs (e.g. Render/Python 3.13)
+# Python 3.13 on Render has SSL CA chain issues with MongoDB Atlas.
+# tlsAllowInvalidCertificates bypasses the expired intermediate cert check.
+# The connection is still encrypted (TLS); only certificate verification is skipped.
 if 'mongodb+srv://' in mongo_url or 'mongodb.net' in mongo_url:
-    client = AsyncIOMotorClient(mongo_url, tlsCAFile=certifi.where())
+    client = AsyncIOMotorClient(mongo_url, tlsAllowInvalidCertificates=True)
 else:
     client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
