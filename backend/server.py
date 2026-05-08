@@ -14,13 +14,18 @@ import jwt
 import razorpay
 import hmac
 import hashlib
+import certifi
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
+# Use certifi CA bundle only for Atlas/cloud connections to fix SSL cert verification errors on hosted envs (e.g. Render/Python 3.13)
+if 'mongodb+srv://' in mongo_url or 'mongodb.net' in mongo_url:
+    client = AsyncIOMotorClient(mongo_url, tlsCAFile=certifi.where())
+else:
+    client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 # Razorpay client

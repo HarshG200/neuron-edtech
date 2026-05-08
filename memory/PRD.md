@@ -63,11 +63,16 @@ A production-grade EdTech platform for Class 10 students to access study materia
 - Refund Policy (`/refund`) - Eligibility criteria, refund process
 - Cancellation Policy (`/cancellation`) - Account management and deletion
 
-### 🟡 Pending Features (P1-P2)
+#### P1 - Video Player with Bunny.net ✅ DONE
+- Embed videos using Bunny.net Stream links (iframe.mediadelivery.net)
+- Handles both Bunny.net and Google Drive links
+- Video viewer includes watermark and security protections
 
-#### P1 - Video Player with Bunny.net
-- Embed videos using Bunny.net Stream links
-- Location: `MaterialViewer.js` - currently only handles PDFs
+### 🔧 Bug Fixes Applied
+- **MongoDB SSL Fix (2026-05)**: Added `certifi.where()` as `tlsCAFile` for Atlas connections to fix `[SSL: CERTIFICATE_VERIFY_FAILED]` error on Render/Python 3.13
+- **Vite Host Fix (2026-05)**: Changed `allowedHosts` to `true` (boolean) in vite.config.js for Vite 6 compatibility
+
+### 🟡 Pending Features (P1-P2)
 
 #### P2 - Additional Enhancements
 - End-to-end testing of complete user flow

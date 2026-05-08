@@ -29,15 +29,7 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       host: '0.0.0.0',
       strictPort: true,
-      allowedHosts: [
-        'localhost',
-        '127.0.0.1',
-        '0.0.0.0',
-        '.localhost',
-        'edtech-platform-26.preview.emergentagent.com',
-        '.emergentagent.com',
-        '.preview.emergentagent.com'
-      ],
+      allowedHosts: true,
     },
     preview: {
       port: 3000,
